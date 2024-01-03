@@ -1,7 +1,7 @@
 package com.example.mkt.security;
 
-import com.example.mkt.entity.UsuarioEntity;
-import com.example.mkt.service.UsuarioService;
+import com.example.mkt.entity.UserEntity;
+import com.example.mkt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,11 +13,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService implements UserDetailsService {
-    private final UsuarioService usuarioService;
+    private final UserService usuarioService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UsuarioEntity> usuarioEntityOptional = usuarioService.findByLogin(username);
+        Optional<UserEntity> usuarioEntityOptional = usuarioService.findByLogin(username);
 
         return usuarioEntityOptional
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario inválido"));

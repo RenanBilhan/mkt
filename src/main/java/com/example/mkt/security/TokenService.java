@@ -1,7 +1,7 @@
 package com.example.mkt.security;
 
-import com.example.mkt.entity.CargoEntity;
-import com.example.mkt.entity.UsuarioEntity;
+import com.example.mkt.entity.RoleEntity;
+import com.example.mkt.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -33,7 +33,7 @@ public class TokenService {
 
     //private final UsuarioService usuarioService;
 
-    public String generateToken(UsuarioEntity usuarioEntity) {
+    public String generateToken(UserEntity usuarioEntity) {
         Date now = new Date();
         boolean visitor = usuarioEntity.getCargos().stream().filter(cargo -> cargo.getNome().equals("RULE_VISITOR")).toList().isEmpty();
         Date exp;
@@ -45,7 +45,7 @@ public class TokenService {
         }
 
         List<String> cargos = usuarioEntity.getCargos().stream()
-                .map(CargoEntity::getAuthority)
+                .map(RoleEntity::getAuthority)
                 .toList();
 
         return TOKEN_PREFIX + " " +

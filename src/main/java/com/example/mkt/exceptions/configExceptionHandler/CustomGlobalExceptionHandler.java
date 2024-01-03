@@ -48,8 +48,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return body;
     }
 
-    @ExceptionHandler(BancoDeDadosException.class)
-    public ResponseEntity<Object> handleException(BancoDeDadosException exception,
+    @ExceptionHandler(DataBaseException.class)
+    public ResponseEntity<Object> handleException(DataBaseException exception,
                                                   HttpServletRequest request) {
         Map<String, Object> body = createBody(exception);
 
@@ -90,8 +90,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
-    @ExceptionHandler(RegraDeNegocioException.class)
-    public ResponseEntity<Object> handleException(RegraDeNegocioException exception,
+    @ExceptionHandler(BussinessRuleException.class)
+    public ResponseEntity<Object> handleException(BussinessRuleException exception,
                                                   HttpServletRequest request) {
             Map<String, Object> body = createBody(exception);
 
