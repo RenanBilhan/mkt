@@ -1,5 +1,6 @@
 package com.example.mkt.controller;
 
+import com.example.mkt.documentation.BuyingSimulatorDoc;
 import com.example.mkt.dto.stock.StockOutputDTO;
 import com.example.mkt.dto.stripe.StripePaymentInputDTO;
 import com.example.mkt.dto.stripe.StripePaymentOutputDTO;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/simulator")
-public class BuyingSimulator {
+public class BuyingSimulator implements BuyingSimulatorDoc {
 
     private final PaymentController pagamentoController;
     private final StockController estoqueController;
@@ -30,28 +31,19 @@ public class BuyingSimulator {
     String publicKey;
 
     @PostMapping("/{idOrder}")
-    public ResponseEntity<StripePaymentOutputDTO> buyingSimulation(Integer idOrder, @RequestBody StripePaymentInputDTO card) throws StripeException, BussinessRuleException {
+    public ResponseEntity<StripePaymentOutputDTO> buyingSimulation(Integer idOrder, @RequestBody String idCard) throws StripeException, BussinessRuleException {
 
-        PaymentMethod paymentMethod = createPaymentMethod(card);
+        PaymentMethod paymentMethod = PaymentMethod.retrieve(idCard);
 
         StripePaymentOutputDTO paymentIntent = pagamentoController.createPayment(idOrder);
         List<StockOutputDTO> estoqueUpdate = estoqueController.reduceStock(idOrder).getBody();
         return pagamentoController.confirmPayment(idOrder, paymentMethod.getId());
     }
 
-    public PaymentMethod createPaymentMethod(StripePaymentInputDTO card) throws BussinessRuleException {
+    public String createPaymentMethod(StripePaymentInputDTO card) throws BussinessRuleException {
         Stripe.apiKey=publicKey;
 
         try{
-
-//            StripeTokenDTO input = new StripeTokenDTO();
-//            input.setCvc(card.getCvc());
-//            input.setExpYear(stripePaymentInputDTO.getExpYear());
-//            input.setCardNumber(stripePaymentInputDTO.getCardNumber());
-//            input.setExpMonth(stripePaymentInputDTO.getExpMonth());
-//            input.setUserName(stripePaymentInputDTO.getUserName());
-//
-//            StripeTokenDTO stripeTokenDTO = stripeTokenService.createCardToken(input);
 
             PaymentMethodCreateParams params =
                     PaymentMethodCreateParams.builder()
@@ -66,7 +58,7 @@ public class BuyingSimulator {
                             )
                             .build();
             PaymentMethod paymentMethod = PaymentMethod.create(params);
-            return paymentMethod;
+            return paymentMethod.getId();
         } catch (StripeException e) {
             throw new BussinessRuleException("Invalid card");
         }
