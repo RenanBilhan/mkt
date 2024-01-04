@@ -1,5 +1,6 @@
 package com.example.mkt.controller;
 
+import com.example.mkt.documentation.ClientControllerDoc;
 import com.example.mkt.dto.client.ClientInputDTO;
 import com.example.mkt.dto.client.ClientOutputDTO;
 import com.example.mkt.dto.message.StatusMessage;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/client")
-public class ClientController {
+public class ClientController implements ClientControllerDoc {
     private final ClientService clientService;
 
     @GetMapping()

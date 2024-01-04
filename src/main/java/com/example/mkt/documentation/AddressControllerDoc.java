@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface AddressControllerDoc {
 
-    @Operation(summary = "List all address.", description = "Retrive a ArrayList with all address of the database in DTOs (the ID in the DTO can be used to access the entity, if necessary) on a ResponseEntity.")
+    @Operation(summary = "List all address.", description = "Retrive a ArrayList with all address of the database in DTOs (the ID in the DTO can be used to access the entity, if necessary).")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return the address list."),
@@ -47,7 +47,6 @@ public interface AddressControllerDoc {
                     @ApiResponse(responseCode = "500", description = "The system threw an exception.")
             }
     )
-
     @PostMapping("/{idClient}")
     public ResponseEntity<AddressOutputDTO> save(@RequestBody @Valid AddressInputDTO addressInputDTO, @PathVariable Integer idClient);
 }

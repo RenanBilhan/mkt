@@ -79,7 +79,7 @@ public class ClientService {
         novoCliente.setEmailCliente(clienteInputDTO.getEmailClient());
         novoCliente.setCpf(clienteInputDTO.getCpf());
         novoCliente.setDataNascimento(clienteInputDTO.getDateOfBirth());
-        novoCliente.setTelefone(clienteInputDTO.getTelefone());
+        novoCliente.setTelefone(clienteInputDTO.getPhoneNumber());
 
         ClientEntity clienteSalvo = clienteRepository.save(novoCliente);
         ClientOutputDTO retorno = new ClientOutputDTO();
@@ -106,7 +106,7 @@ public class ClientService {
 
         String genero = generoPessoa.toString();
 
-        String telefone = clienteInputDTO.getTelefone();
+        String telefone = clienteInputDTO.getPhoneNumber();
 
         if(!clienteAtualizar.getNomeCliente().equals(nomeCliente)){
             clienteAtualizar.setNomeCliente(nomeCliente);
