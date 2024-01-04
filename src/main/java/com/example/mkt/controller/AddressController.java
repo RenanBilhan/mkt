@@ -1,5 +1,6 @@
 package com.example.mkt.controller;
 
+import com.example.mkt.documentation.AddressControllerDoc;
 import com.example.mkt.dto.address.AddressInputDTO;
 import com.example.mkt.dto.address.AddressOutputDTO;
 import com.example.mkt.service.AddressService;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/endereco")
 @RequiredArgsConstructor
-public class AddressController {
+public class AddressController implements AddressControllerDoc {
 
     private final AddressService addressService;
 
