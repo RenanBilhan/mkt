@@ -56,7 +56,7 @@ public interface ClientControllerDoc {
     @Operation(summary = "Save a new client.", description = "Save a new client on the database. You can pass the client information by the ClientInputDTO and the user id. Must create a User first on the UserController.")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Return an ClientOutputDTO with the information and the client ID, which is not the same of the user id."),
+                    @ApiResponse(responseCode = "200", description = "Return a ClientOutputDTO with the information and the client ID, which is not the same of the user id."),
                     @ApiResponse(responseCode = "400", description = "It wasn't possible to save the client."),
                     @ApiResponse(responseCode = "403", description = "You have no permission to save a client."),
                     @ApiResponse(responseCode = "500", description = "The system threw an exception.")

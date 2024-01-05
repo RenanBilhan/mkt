@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/pagamento")
 @RequiredArgsConstructor
 public class PaymentController {
-
-//    private final StripeTokenService stripeTokenService;
+    
     private final StripeService chargeService;
 
     @PostMapping("/create/payment/intent/{idPedido}")

@@ -1,5 +1,6 @@
 package com.example.mkt.controller;
 
+import com.example.mkt.documentation.OrderControllerDoc;
 import com.example.mkt.dto.order.OrderInputDTO;
 import com.example.mkt.dto.order.OrderOutputDTO;
 import com.example.mkt.exceptions.BussinessRuleException;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/pedido")
 @RequiredArgsConstructor
-public class OrderController {
+public class OrderController implements OrderControllerDoc {
 
     private final OrderService pedidoService;
 
@@ -29,8 +30,8 @@ public class OrderController {
         return new ResponseEntity<>(pedidoService.save(idCliente, pedidoInputDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("/payment/confirm/{idPedido}")
-    public ResponseEntity<OrderOutputDTO> confirmPayment(@PathVariable Integer idPedido) throws MessagingException {
-        return new ResponseEntity<>(pedidoService.confirmPayment(idPedido), HttpStatus.OK);
-    }
+//    @PutMapping("/payment/confirm/{idPedido}")
+//    public ResponseEntity<OrderOutputDTO> confirmPayment(@PathVariable Integer idPedido) throws MessagingException {
+//        return new ResponseEntity<>(pedidoService.confirmPayment(idPedido), HttpStatus.OK);
+//    }
 }
