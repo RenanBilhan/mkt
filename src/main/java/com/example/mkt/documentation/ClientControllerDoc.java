@@ -53,7 +53,7 @@ public interface ClientControllerDoc {
     @GetMapping("/foto/{idClient}")
     public ResponseEntity<String> findClienteFoto(@PathVariable @Positive Integer idClient) throws BussinessRuleException;
 
-    @Operation(summary = "Save a new client.", description = "Save a new client on the database. You can pass the client information by the ClientInputDTO and the user id. Must create a User first on the UserController.")
+    @Operation(summary = "Save a new client.", description = "Save a new client on the database. You can send the client information by the ClientInputDTO and the user id. Must create a User first on the UserController.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return a ClientOutputDTO with the information and the client ID, which is not the same of the user id."),
@@ -65,7 +65,7 @@ public interface ClientControllerDoc {
     @PostMapping("/usuario/{idUser}")
     public ResponseEntity<ClientOutputDTO> save(PersonGender personGender, @RequestBody @Valid ClientInputDTO clientInputDTO, @PathVariable Integer idUser);
 
-    @Operation(summary = "Update a client information.", description = "Update a client information in the database. You can pass the client information by the ClientInputDTO and the client id.")
+    @Operation(summary = "Update a client information.", description = "Update a client information in the database. You can send the client information by the ClientInputDTO and the client id.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return an ClientOutputDTO with the updated information."),
@@ -77,7 +77,7 @@ public interface ClientControllerDoc {
     @PutMapping("{idClient}")
     public ResponseEntity<ClientOutputDTO> update(PersonGender personGender, @PathVariable Integer idClient, @RequestBody @Valid ClientInputDTO clientInputDTO);
 
-    @Operation(summary = "Update a client photo.", description = "Update a client photo in the database. You can pass the client photo by a MultipartFile and the client id.")
+    @Operation(summary = "Update a client photo.", description = "Update a client photo in the database. You can send the client photo by a MultipartFile and the client id.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return an StatusMessage."),

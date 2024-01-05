@@ -25,7 +25,7 @@ public interface OrderControllerDoc {
     @GetMapping
     public ResponseEntity<List<OrderOutputDTO>> findAll();
 
-    @Operation(summary = "Save a new order.", description = "Save a new order on the database. You can pass the order information by the OrderInputDTO and the client id. Must create a Client first on the ClientController.")
+    @Operation(summary = "Save a new order.", description = "Save a new order on the database. You can send the order information by the OrderInputDTO and the client id. Must create a Client first on the ClientController.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return an OrderOutputDTO with the information and the client ID."),

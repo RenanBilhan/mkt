@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface BuyingSimulatorDoc {
 
-    @Operation(summary = "Create a payment method (credit card).", description = "Recives the credit card information and send straight away to the Stripe API, preserving the LGPD (LGPD means General Data Protection Law regulations) rules (brazilian data protection law) " +
+    @Operation(summary = "Create a payment method (credit card).", description = "Recives the credit card information and send straight away to the Stripe API, preserving the LGPD rules (LGPD means General Data Protection Law regulations) (brazilian data protection law) " +
     "It is important to notice that this controller is a simulation of the Frontend  interaction, so the credit card data won't touch this application API (backend) to respect the LGPD rules.")
     @ApiResponses(
             value = {
@@ -30,7 +30,7 @@ public interface BuyingSimulatorDoc {
             "buying action with the following flow:" +
             " -> Retrive the payment method using the id in the parameters." +
             " -> Create the Payment intent object in Stripe API." +
-            " -> Try to update the stock, reducing the amount buyed (if the sotock is not enough, an exception is trhown)" +
+            " -> Try to update the stock, reducing the amount buyed (if the stock is not enough, an exception is trhown)" +
             " -> Use the id order and the payment method  to confirm the payment.")
     @ApiResponses(
             value = {
