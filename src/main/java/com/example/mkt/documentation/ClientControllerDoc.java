@@ -31,7 +31,7 @@ public interface ClientControllerDoc {
     @GetMapping()
     public ResponseEntity<List<ClientOutputDTO>> findAll();
 
-    @Operation(summary = "Retrive the client.", description = "Retrive a client who's id corresponds to the id passed on the arguments.")
+    @Operation(summary = "Retrive the client.", description = "Retrive a client who's id corresponds to the id sent on the arguments.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return the client."),
@@ -65,10 +65,10 @@ public interface ClientControllerDoc {
     @PostMapping("/usuario/{idUser}")
     public ResponseEntity<ClientOutputDTO> save(PersonGender personGender, @RequestBody @Valid ClientInputDTO clientInputDTO, @PathVariable Integer idUser);
 
-    @Operation(summary = "Update a client information.", description = "Update a client information in the database. You can send the client information by the ClientInputDTO and the client id.")
+    @Operation(summary = "Update a client information.", description = "Update a client information in the database. You can send the ClientInputDTO and the client id by the arguments.")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Return an ClientOutputDTO with the updated information."),
+                    @ApiResponse(responseCode = "200", description = "Return a ClientOutputDTO with the updated information."),
                     @ApiResponse(responseCode = "400", description = "It wasn't possible to update the client."),
                     @ApiResponse(responseCode = "403", description = "You have no permission to update that client."),
                     @ApiResponse(responseCode = "500", description = "The system threw an exception.")
