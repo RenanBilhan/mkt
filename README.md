@@ -1,8 +1,14 @@
 MarketPlace Database Simulation
 Simulação de Banco de Dados de um MarketPlace
 
+**Credit card test token to use:
+card number: 4242424242424242 
+exp month: any future month
+exp year: any future year
+cvc: any 3 numbers combination (123 for exemple)
+user name: any name**
 
-
+OBS: this toke is provided by StripeAPI and you can find more of them in https://stripe.com/docs/testing#cards for different tests.
 
 English Description -> 
 **For the correct use of the application, you need a Stripe account. You can cadastrate at https://stripe.com/br. When you complete the cadastration, you can access https://dashboard.stripe.com/test/apikeys, where you can find your Secret API Key and the Public API key. You can pass both keys By VM args in the application properties. the properties are already defined.**
