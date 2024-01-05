@@ -35,7 +35,7 @@ public class BuyingSimulator implements BuyingSimulatorDoc {
 
         PaymentMethod paymentMethod = PaymentMethod.retrieve(idCard);
 
-        StripePaymentOutputDTO paymentIntent = pagamentoController.createPayment(idOrder);
+        StripePaymentOutputDTO paymentIntent = pagamentoController.createPayment(idOrder).getBody();
         List<StockOutputDTO> estoqueUpdate = estoqueController.reduceStock(idOrder).getBody();
         return pagamentoController.confirmPayment(idOrder, paymentMethod.getId());
     }

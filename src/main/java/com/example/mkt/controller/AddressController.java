@@ -21,7 +21,7 @@ public class AddressController implements AddressControllerDoc {
     private final AddressService addressService;
 
     @GetMapping()
-    public ResponseEntity<List<AddressOutputDTO>> getAll(){
+    public ResponseEntity<List<AddressOutputDTO>> findAll(){
         return new ResponseEntity<>(addressService.findAll(), HttpStatus.OK);
     }
 

@@ -25,7 +25,7 @@ public interface AddressControllerDoc {
             }
     )
     @GetMapping
-    public ResponseEntity<List<AddressOutputDTO>> getAll();
+    public ResponseEntity<List<AddressOutputDTO>> findAll();
 
     @Operation(summary = "List all address of the client.", description = "Retrive a ArrayList with all address of the database that are related to a client (pass the client ID in the arguments) in DTOs (the ID in the DTO can be used to access the entity, if necessary) on a ResponseEntity.")
     @ApiResponses(
@@ -38,7 +38,7 @@ public interface AddressControllerDoc {
     @GetMapping("/cliente/{idClient}")
     public ResponseEntity<List<AddressOutputDTO>> findByIdCliente(@PathVariable Integer idClient);
 
-    @Operation(summary = "Save a new address.", description = "Save a new address on the database. You can pass the address information by the AddressInputDTO and th owner of the address on the arguments. The owner must be registered on the sistem as a client.")
+    @Operation(summary = "Save a new address.", description = "Save a new address on the database. You can send the address information by the AddressInputDTO and th owner of the address on the arguments. The owner must be registered on the sistem as a client.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return an AddressOutputDTO with the address information and ID."),
