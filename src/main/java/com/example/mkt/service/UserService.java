@@ -75,7 +75,7 @@ public class UserService {
 
         UserEntity newUser = new UserEntity();
         String passwordCript = passwordEncoder.encode(loginInputDTO.getPassword());
-        RoleEntity cargoEntity = roleRepository.findByNome(role.toString()).orElseThrow(() -> new EntitiesNotFoundException("Role not found."));
+        RoleEntity cargoEntity = roleRepository.findByName(role.toString()).orElseThrow(() -> new EntitiesNotFoundException("Role not found."));
 
         newUser.setLogin(loginInputDTO.getLogin());
         newUser.setPassword(passwordCript);

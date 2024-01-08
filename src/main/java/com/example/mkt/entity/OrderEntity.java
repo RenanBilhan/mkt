@@ -43,7 +43,7 @@ public class OrderEntity {
     private ClientEntity client;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pedidoEstoquePK.pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderStockPK.order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderStockEntity> items;
 
     @Override

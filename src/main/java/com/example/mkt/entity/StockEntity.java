@@ -25,8 +25,10 @@ public class StockEntity {
     @Column(name = "ID_ESTOQUE")
     private Integer idStock;
 
+    @Column(name = "TAMANHO")
     private String size;
 
+    @Column(name = "QUANTIDADE")
     private Integer quantity;
 
     @JsonIgnore
@@ -35,7 +37,7 @@ public class StockEntity {
     private ProductEntity product;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pedidoEstoquePK.estoque", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderStockPK.stock", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderStockEntity> orders;
 
     @JsonIgnore

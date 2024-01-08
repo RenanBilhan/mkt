@@ -75,7 +75,7 @@ public class OrderService {
 
             orderStockList.add(orderStockEntity);
             newOrder.setItems(orderStockList);
-            newOrder.setPriceTotalProducts(currentValue += orderStockEntity.getPricec());
+            newOrder.setPriceTotalProducts(currentValue += orderStockEntity.getPrice());
 
         }
 

@@ -36,15 +36,15 @@ public class OrderStockEntity implements Serializable {
     @Setter
     @Getter
     @Column(name = "PRECO")
-    private Double pricec;
+    private Double price;
 
     public OrderStockEntity(OrderEntity pedido, StockEntity estoque,
-                            Integer quantity, Double pricec, String size) {
+                            Integer quantity, Double price, String size) {
         super();
         orderStockPK.setOrder(pedido);
         orderStockPK.setStock(estoque);
         this.quantity = quantity;
-        this.pricec = pricec;
+        this.price = price;
         this.size = size;
     }
 
@@ -53,7 +53,7 @@ public class OrderStockEntity implements Serializable {
         return orderStockPK.getOrder();
     }
 
-    public void setPedido(OrderEntity pedido){
+    public void setStock(OrderEntity pedido){
         orderStockPK.setOrder(pedido);
     }
 
@@ -66,7 +66,7 @@ public class OrderStockEntity implements Serializable {
     }
 
     public Double getSubtotal(){
-        return this.pricec * this.quantity;
+        return this.price * this.quantity;
     }
 
     @Override

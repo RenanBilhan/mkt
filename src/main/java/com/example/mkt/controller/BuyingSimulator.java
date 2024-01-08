@@ -30,9 +30,12 @@ public class BuyingSimulator implements BuyingSimulatorDoc {
     @Value("${stripe.public.key}")
     String publicKey;
 
-    @PostMapping("/{idOrder}")
-    public ResponseEntity<StripePaymentOutputDTO> buyingSimulation(Integer idOrder, @RequestBody String idCard) throws StripeException, BussinessRuleException {
+    @Value("${stripe.api.key}")
+    String apiKey;
 
+    @PostMapping("/{idOrder}")
+    public ResponseEntity<StripePaymentOutputDTO> buyingSimulation(Integer idOrder, String idCard) throws StripeException, BussinessRuleException {
+        Stripe.apiKey=apiKey;
         PaymentMethod paymentMethod = PaymentMethod.retrieve(idCard);
 
         StripePaymentOutputDTO paymentIntent = pagamentoController.createPayment(idOrder).getBody();
@@ -40,6 +43,7 @@ public class BuyingSimulator implements BuyingSimulatorDoc {
         return pagamentoController.confirmPayment(idOrder, paymentMethod.getId());
     }
 
+    @PostMapping("/create/payment")
     public String createPaymentMethod(StripePaymentInputDTO card) throws BussinessRuleException {
         Stripe.apiKey=publicKey;
 
