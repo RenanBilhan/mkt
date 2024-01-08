@@ -21,10 +21,10 @@ public class RoleEntity implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARGO_SEQ")
     @SequenceGenerator(name = "CARGO_SEQ", sequenceName = "seq_cargo", allocationSize = 1)
     @Column(name = "ID_CARGO")
-    private Integer idCargo;
+    private Integer idRole;
 
     @Column(name = "NOME")
-    private String nome;
+    private String name;
 
     @JsonIgnore
     @ManyToMany
@@ -33,12 +33,12 @@ public class RoleEntity implements GrantedAuthority {
             joinColumns = @JoinColumn(name = "ID_CARGO"),
             inverseJoinColumns = @JoinColumn(name = "ID_USUARIO")
     )
-    private Set<UserEntity> usuarios;
+    private Set<UserEntity> users;
 
 
 
     @Override
     public String getAuthority() {
-        return nome.toString();
+        return name.toString();
     }
 }

@@ -27,25 +27,25 @@ public class StripeService {
     @Value("${stripe.api.key}")
     String apiKey;
 
-    public StripePaymentOutputDTO createPaymentIntent(Integer idPedido) throws StripeException, BussinessRuleException {
+    public StripePaymentOutputDTO createPaymentIntent(Integer idOrder) throws StripeException, BussinessRuleException {
 
         Stripe.apiKey = apiKey;
-        OrderEntity pedido = pedidoRepository.findById(idPedido).orElseThrow(() -> new EntitiesNotFoundException("Pedido não encontrado"));
+        OrderEntity order = pedidoRepository.findById(idOrder).orElseThrow(() -> new EntitiesNotFoundException("Order not found."));
 
-        if(pedido.getStatus().toString().toUpperCase() != "AGUARDANDO_PAGAMENTO"){
-            throw new BussinessRuleException("O pagamento ja foi efetuado.");
+        if(order.getStatus().toString().toUpperCase() != "AGUARDANDO_PAGAMENTO"){
+            throw new BussinessRuleException("The payment has already been paid.");
         }
 
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setCurrency("brl")
-                .setAmount((long)(pedido.getPrecoTotalProdutos() * 100L))
+                .setAmount((long)(order.getPriceTotalProducts() * 100L))
                 .build();
 
         PaymentIntent intent = PaymentIntent.create(createParams);
-        pedido.setIdPagamentoStripe(intent.getId());
-        pedidoRepository.save(pedido);
+        order.setIdStripePayment(intent.getId());
+        pedidoRepository.save(order);
 
-        return new StripePaymentOutputDTO(idPedido, intent.getClientSecret(), intent.getId(), intent.getStatus(), OrderStatus.AGUARDANDO_PAGAMENTO.toString());
+        return new StripePaymentOutputDTO(idOrder, intent.getClientSecret(), intent.getId(), intent.getStatus(), OrderStatus.AGUARDANDO_PAGAMENTO.toString());
 
     }
 
@@ -53,22 +53,22 @@ public class StripeService {
 
         OrderEntity order = pedidoRepository.findById(idOrder).orElseThrow(() -> new EntitiesNotFoundException("Order not found."));
 
-        ClientEntity cliente = order.getCliente();
+        ClientEntity client = order.getClient();
 
 
         Stripe.apiKey = apiKey;
-        PaymentIntent resource = PaymentIntent.retrieve(order.getIdPagamentoStripe());
+        PaymentIntent resource = PaymentIntent.retrieve(order.getIdStripePayment());
 
         PaymentIntentConfirmParams confirmParams =
                 PaymentIntentConfirmParams.builder()
                         .setPaymentMethod(paymentMethodId)
                         .setReturnUrl("http://localhost:8080/swagger-ui/index.html#/pagamento-controller/confirmPayment_1")
-                        .setReceiptEmail(cliente.getEmailCliente())
+                        .setReceiptEmail(client.getEmailClient())
                         .build();
         PaymentIntent paymentIntent = resource.confirm(confirmParams);
         order.setStatus(OrderStatus.PAGO);
         pedidoRepository.save(order);
-        StripePaymentOutputDTO outputDTO = new StripePaymentOutputDTO(order.getIdPedido(), paymentIntent.getClientSecret(),
+        StripePaymentOutputDTO outputDTO = new StripePaymentOutputDTO(order.getIdOrder(), paymentIntent.getClientSecret(),
                 paymentIntent.getId(),paymentIntent.getStatus(), order.getStatus().toString());
 
         return outputDTO;

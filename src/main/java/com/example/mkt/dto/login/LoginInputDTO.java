@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -17,5 +16,5 @@ public class LoginInputDTO {
     @NotNull
     private String login;
     @NotNull
-    private String senha;
+    private String password;
 }

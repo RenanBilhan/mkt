@@ -12,18 +12,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StockOutputDTO {
 
-    private Integer idEstoque;
+    private Integer idStock;
 
-    private String tamanho;
+    private String size;
 
-    private Integer quantidade;
+    private Integer quantity;
 
-    private Integer idProduto;
+    private Integer idProduct;
 
     public StockOutputDTO(StockEntity entity) {
-        this.idEstoque = entity.getIdEstoque();
-        this.tamanho = entity.getTamanho();
-        this.quantidade = entity.getQuantidade();
-        this.idProduto = entity.getProduto().getIdProduto();
+        this.idStock = entity.getIdStock();
+        this.size = entity.getSize();
+        this.quantity = entity.getQuantity();
+        this.idProduct = entity.getProduct().getIdProduct();
     }
 }

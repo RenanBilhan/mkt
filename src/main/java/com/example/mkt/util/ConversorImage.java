@@ -7,21 +7,21 @@ import java.io.IOException;
 
 public class ConversorImage {
 
-    public static byte[] converterParaImagem(MultipartFile foto) throws IOException {
-        return foto.getBytes();
+    public static byte[] converterParaImagem(MultipartFile photo) throws IOException {
+        return photo.getBytes();
     }
 
-    public static String converterParaBase(byte[] fotoPerfil){
-        byte[] fotoBase = Base64.encodeBase64(fotoPerfil);
-        return new String(fotoBase);
+    public static String converterParaBase(byte[] photoProfile){
+        byte[] photoBase = Base64.encodeBase64(photoProfile);
+        return new String(photoBase);
     }
 
-    public static boolean isImageFile(MultipartFile imagem){
-        if(imagem.isEmpty()){
+    public static boolean isImageFile(MultipartFile image){
+        if(image.isEmpty()){
             return false;
         }
 
-        String originalFileName = imagem.getOriginalFilename();
+        String originalFileName = image.getOriginalFilename();
 
         String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
 

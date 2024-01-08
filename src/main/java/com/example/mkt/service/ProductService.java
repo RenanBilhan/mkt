@@ -19,69 +19,68 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepository produtoRepository;
+    private final ProductRepository productRepository;
 
     public List<ProductOutputDTO> findAll(){
-        return produtoRepository.findAll().stream()
+        return productRepository.findAll().stream()
                 .map(ProductOutputDTO::new)
                 .toList();
     }
 
-    public ProductOutputDTO findById(Integer idProduto){
+    public ProductOutputDTO findById(Integer idProduct){
 
-        return ConversorMapper.converter(produtoRepository.findById(idProduto)
-                .orElseThrow(() -> new EntitiesNotFoundException("Produto não encontrado.")),
+        return ConversorMapper.converter(productRepository.findById(idProduct)
+                .orElseThrow(() -> new EntitiesNotFoundException("Product not found.")),
                 ProductOutputDTO.class);
 
     }
 
-    public ProductOutputDTO save(ProductInputDTO produtoInputDTO) throws BussinessRuleException {
+    public ProductOutputDTO save(ProductInputDTO productInputDTO) throws BussinessRuleException {
 
-        ProductEntity novoProduto = new ProductEntity();
+        ProductEntity newProduct = new ProductEntity();
 
-        BeanUtils.copyProperties(produtoInputDTO, novoProduto);
+        BeanUtils.copyProperties(productInputDTO, newProduct);
 
-        ProductEntity produtoSalvo = produtoRepository.save(novoProduto);
+        ProductEntity productSaved = productRepository.save(newProduct);
 
-        if(produtoSalvo == null){
-            throw new BussinessRuleException("Produto inválido");
+        if(productSaved == null){
+            throw new BussinessRuleException("Invalid product.");
         }
 
-        return ConversorMapper.converter(produtoSalvo, ProductOutputDTO.class);
+        return ConversorMapper.converter(productSaved, ProductOutputDTO.class);
     }
 
-    public ProductOutputDTO update(Integer idProduto, ProductUpdateDTO produtoUpdateDTO) throws BussinessRuleException {
+    public ProductOutputDTO update(Integer idProduct, ProductUpdateDTO productUpdateDTO) throws BussinessRuleException {
 
-        if(produtoUpdateDTO == null){
-            throw new BussinessRuleException("Insira as informações a serem atualizadas.");
+        if(productUpdateDTO == null){
+            throw new BussinessRuleException("Insert the informations to update.");
         }
 
-        ProductEntity produtoAtualizar = produtoRepository.findById(idProduto)
-                .orElseThrow(() -> new EntitiesNotFoundException("Produto não encontrado."));
+        ProductEntity productToUpdate = productRepository.findById(idProduct)
+                .orElseThrow(() -> new EntitiesNotFoundException("Product not found."));
 
-        if(produtoUpdateDTO.getNomeProduto() != null){
-           produtoAtualizar.setNomeProduto(produtoUpdateDTO.getNomeProduto());
+        if(productUpdateDTO.getNameProduct() != null){
+           productToUpdate.setNameProduct(productUpdateDTO.getNameProduct());
         }
-        if(produtoUpdateDTO.getPreco() != null){
-           produtoAtualizar.setPreco(produtoUpdateDTO.getPreco());
+        if(productUpdateDTO.getPrice() != null){
+           productToUpdate.setPrice(productUpdateDTO.getPrice());
         }
-        if(produtoUpdateDTO.getDescricao() != null){
-           produtoAtualizar.setDescricao(produtoUpdateDTO.getDescricao());
+        if(productUpdateDTO.getDescription() != null){
+           productToUpdate.setDescription(productUpdateDTO.getDescription());
         }
 
-        ProductEntity produtoAtualizado = produtoRepository.save(produtoAtualizar);
+        ProductEntity updatedProduct = productRepository.save(productToUpdate);
 
-        return ConversorMapper.converter(produtoAtualizado, ProductOutputDTO.class);
+        return ConversorMapper.converter(updatedProduct, ProductOutputDTO.class);
 
     }
 
-    public void delete(Integer idProduto){
+    public void delete(Integer idProduct){
 
-        Optional<ProductEntity> produtoDeletar = produtoRepository.findById(idProduto);
+        Optional<ProductEntity> productToDelete = productRepository.findById(idProduct);
 
-        if(produtoDeletar.isPresent()){
-            produtoRepository.delete(produtoDeletar.get());
+        if(productToDelete.isPresent()){
+            productRepository.delete(productToDelete.get());
         }
-
     }
 }

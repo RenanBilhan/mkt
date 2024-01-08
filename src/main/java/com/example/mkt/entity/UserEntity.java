@@ -20,13 +20,13 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USUARIO_SEQUENCIA")
     @SequenceGenerator(name = "USUARIO_SEQUENCIA", sequenceName = "seq_usuario", allocationSize = 1)
     @Column(name = "ID_USUARIO")
-    private Integer idUsuario;
+    private Integer idUser;
 
     @Column(name = "LOGIN")
     private String login;
 
     @Column(name = "SENHA")
-    private String senha;
+    private String password;
 
     @JsonIgnore
     @ManyToMany
@@ -43,7 +43,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return senha;
+        return password;
     }
 
     @Override

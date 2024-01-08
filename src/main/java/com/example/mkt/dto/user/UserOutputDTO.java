@@ -17,13 +17,13 @@ import java.util.Set;
 @Setter
 public class UserOutputDTO {
 
-    private Integer idUsuario;
+    private Integer idUser;
     private String login;
-    private String senha;
-    private Set<RoleEntity> cargo = new HashSet<>();
+    private String password;
+    private Set<RoleEntity> role = new HashSet<>();
 
     public UserOutputDTO(UserEntity entity) {
         BeanUtils.copyProperties(entity, this);
-        this.setCargo(entity.getCargos());
+        this.setRole(entity.getCargos());
     }
 }

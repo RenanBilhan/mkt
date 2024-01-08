@@ -1,7 +1,7 @@
 package com.example.mkt.exceptions;
 
 public class FormatNotValid extends Exception{
-    public FormatNotValid(String msg){
-        super(msg);
+    public FormatNotValid(String message){
+        super(message);
     }
 }

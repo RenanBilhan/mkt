@@ -101,7 +101,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(UniqueFieldExistsException.class)
     public ResponseEntity<Object> handleException(UniqueFieldExistsException exception,
                                                   HttpServletRequest request) {
-        Map<String, String> errors = exception.getCamposViolados();
+        Map<String, String> errors = exception.getViolatedFields();
 
 
         Map<String, Object> response = new HashMap<>();

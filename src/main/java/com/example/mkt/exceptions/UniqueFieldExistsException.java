@@ -4,13 +4,13 @@ import java.util.Map;
 
 public class UniqueFieldExistsException extends Exception {
 
-    private Map<String, String> camposViolados;
+    private Map<String, String> violatedFields;
 
-    public UniqueFieldExistsException(Map<String, String> camposViolados) {
-        this.camposViolados = camposViolados;
+    public UniqueFieldExistsException(Map<String, String> violatedFields) {
+        this.violatedFields = violatedFields;
     }
 
-    public Map<String, String> getCamposViolados() {
-        return camposViolados;
+    public Map<String, String> getViolatedFields() {
+        return violatedFields;
     }
 }

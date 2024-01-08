@@ -11,9 +11,6 @@ import lombok.Setter;
 @Setter
 public class StripePaymentInputDTO {
 
-//    @SerializedName("items")
-//    Object[] items;
-
     private String cardNumber;
     private String expMonth;
     private String expYear;

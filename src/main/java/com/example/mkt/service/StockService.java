@@ -23,57 +23,57 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockService {
 
-    private final StockRepository estoqueRepository;
-    private final ProductRepository produtoRepository;
-    private final OrderRepository pedidoRepository;
+    private final StockRepository stockRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
     public List<StockOutputDTO> findAll(){
-        return estoqueRepository.findAll().stream()
+        return stockRepository.findAll().stream()
                 .map(StockOutputDTO::new)
                 .toList();
     }
 
-    public StockOutputDTO findById(Integer idEstoque){
-        return estoqueRepository.findById(idEstoque).map(StockOutputDTO::new)
-                .orElseThrow(() -> new EntitiesNotFoundException("Estoque não encontrado."));
+    public StockOutputDTO findById(Integer idStock){
+        return stockRepository.findById(idStock).map(StockOutputDTO::new)
+                .orElseThrow(() -> new EntitiesNotFoundException("Stock not found."));
     }
 
-    public StockOutputDTO save(Integer idProduto, StockInputDTO estoqueInputDTO){
+    public StockOutputDTO save(Integer idProduct, StockInputDTO stockInputDTO){
 
-        ProductEntity produto = produtoRepository.findById(idProduto)
-                .orElseThrow(() -> new EntitiesNotFoundException("Produto não encontrado"));
+        ProductEntity product = productRepository.findById(idProduct)
+                .orElseThrow(() -> new EntitiesNotFoundException("Product not found."));
 
-        StockEntity novoEstoque = new StockEntity();
-        novoEstoque.setProduto(produto);
-        BeanUtils.copyProperties(estoqueInputDTO, novoEstoque);
+        StockEntity newStock = new StockEntity();
+        newStock.setProduct(product);
+        BeanUtils.copyProperties(stockInputDTO, newStock);
 
-        StockEntity estoque = estoqueRepository.save(novoEstoque);
+        StockEntity stock = stockRepository.save(newStock);
 
-        StockOutputDTO retorno = ConversorMapper.converter(estoque, StockOutputDTO.class);
-        return retorno;
+        StockOutputDTO stockRetorno = ConversorMapper.converter(stock, StockOutputDTO.class);
+        return stockRetorno;
     }
 
-    public StockOutputDTO update(Integer idProduto, StockInputDTO estoqueInputDTO){
-        ProductEntity produto = produtoRepository.findById(idProduto)
-                .orElseThrow(() -> new EntitiesNotFoundException("Produto não encontrado"));
+    public StockOutputDTO update(Integer idProduct, StockInputDTO stockInputDTO){
+        ProductEntity product = productRepository.findById(idProduct)
+                .orElseThrow(() -> new EntitiesNotFoundException("Product not found."));
 
-        StockEntity estoque = estoqueRepository.findAll().stream()
-                        .filter(estoqueEntity -> estoqueEntity.getProduto().getIdProduto()==idProduto)
+        StockEntity stock = stockRepository.findAll().stream()
+                        .filter(estoqueEntity -> estoqueEntity.getProduct().getIdProduct()==idProduct)
                         .toList()
                         .get(0);
-        BeanUtils.copyProperties(estoqueInputDTO, estoque);
+        BeanUtils.copyProperties(stockInputDTO, stock);
 
-        StockEntity estoqueAtualizado = estoqueRepository.save(estoque);
+        StockEntity updatedStock = stockRepository.save(stock);
 
-        StockOutputDTO retorno = ConversorMapper.converter(estoque, StockOutputDTO.class);
-        return retorno;
+        StockOutputDTO stockReturn = ConversorMapper.converter(stock, StockOutputDTO.class);
+        return stockReturn;
     }
 
     public List<StockOutputDTO> reduceStock(Integer idOrder) throws BussinessRuleException {
 
-        OrderEntity order = pedidoRepository.findById(idOrder).orElseThrow(() -> new EntitiesNotFoundException("Order not found."));
+        OrderEntity order = orderRepository.findById(idOrder).orElseThrow(() -> new EntitiesNotFoundException("Order not found."));
 
-        List<OrderStockEntity> orderStocks = order.getItens();
+        List<OrderStockEntity> orderStocks = order.getItems();
 
         List<StockOutputDTO> outputDTOS = new ArrayList<>();
 
@@ -82,7 +82,7 @@ public class StockService {
 
         if(outOfStockItems.size()>0){
             for (OrderStockEntity stock: outOfStockItems){
-                System.out.println("Unable to carry on complete the order because the item "+ stock.getEstoque().getProduto().getNomeProduto() + " on size "+ stock.getEstoque().getTamanho() + " is out of Stock.");
+                System.out.println("Unable to complete the order because the item "+ stock.getEstoque().getProduct().getNameProduct() + " on size "+ stock.getEstoque().getSize() + " is out of Stock.");
             }
 
             throw new BussinessRuleException("Products out of Stock.");
@@ -95,8 +95,8 @@ public class StockService {
 
             StockEntity stockToUpdate = orderStock.getEstoque();
 
-            stockToUpdate.setQuantidade(stockToUpdate.getQuantidade()- orderStock.getQuantidade());
-            StockEntity updatedStock = estoqueRepository.save(stockToUpdate);
+            stockToUpdate.setQuantity(stockToUpdate.getQuantity()- orderStock.getQuantity());
+            StockEntity updatedStock = stockRepository.save(stockToUpdate);
 
             outputDTOS.add(ConversorMapper.converter(updatedStock, StockOutputDTO.class));
         }
@@ -105,7 +105,7 @@ public class StockService {
 
     public boolean verifyOutOfStock(OrderStockEntity orderStock) {
 
-        return orderStock.getQuantidade() > orderStock.getEstoque().getQuantidade();
+        return orderStock.getQuantity() > orderStock.getEstoque().getQuantity();
 
     }
 }

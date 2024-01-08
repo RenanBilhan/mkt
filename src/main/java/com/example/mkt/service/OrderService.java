@@ -16,93 +16,86 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class OrderService {
 
-    private final OrderRepository pedidoRepository;
+    private final OrderRepository orderRepository;
 
-    private final ClientRepository clienteRepository;
+    private final ClientRepository clientRepository;
 
-    private final StockRepository estoqueRepository;
+    private final StockRepository stockRepository;
 
-    private final EmailService emailService;
+//    private final EmailService emailService;
 
-    private final OrderStockRepository pedidoEstoqueRepository;
+    private final OrderStockRepository orderStockRepository;
 
     public List<OrderOutputDTO> findAll(){
         List<ItemOutputDTO> items = new ArrayList<>();
-        return pedidoRepository.findAll().stream()
+        return orderRepository.findAll().stream()
                 .map(OrderOutputDTO::new)
                 .collect(Collectors.toList());
     }
 
-    public OrderOutputDTO save(Integer idCliente, OrderInputDTO pedidoInputDTO) throws BussinessRuleException, MessagingException {
+    public OrderOutputDTO save(Integer idClient, OrderInputDTO orderInputDTO) throws BussinessRuleException, MessagingException {
 
-        List<OrderStockInputDTO> itens = pedidoInputDTO.getItens();
+        List<OrderStockInputDTO> items = orderInputDTO.getItems();
 
-        ClientEntity cliente = clienteRepository.findById(idCliente)
-                .orElseThrow(() -> new EntitiesNotFoundException("Cliente não encontrado."));
+        ClientEntity client = clientRepository.findById(idClient)
+                .orElseThrow(() -> new EntitiesNotFoundException("Client not found."));
 
-        OrderEntity novoPedido = new OrderEntity();
+        OrderEntity newOrder = new OrderEntity();
 
-        novoPedido.setStatus(OrderStatus.AGUARDANDO_PAGAMENTO);
-        novoPedido.setFrete(0.0);
-        novoPedido.setPrecoTotalProdutos(0.0);
-        novoPedido.setCliente(cliente);
+        newOrder.setStatus(OrderStatus.AGUARDANDO_PAGAMENTO);
+        newOrder.setFreight(0.0);
+        newOrder.setPriceTotalProducts(0.0);
+        newOrder.setClient(client);
 
-        OrderEntity pedidoCriado = pedidoRepository.save(novoPedido);
+        OrderEntity createdOrder = orderRepository.save(newOrder);
 
-        List<OrderStockEntity> listaPedidoEstoque = new ArrayList<>();
+        List<OrderStockEntity> orderStockList = new ArrayList<>();
 
-        for(OrderStockInputDTO item : itens) {
+        for(OrderStockInputDTO item : items) {
 
 
-            Double valorAtual = novoPedido.getPrecoTotalProdutos();
+            Double currentValue = newOrder.getPriceTotalProducts();
 
-            StockEntity estoque = estoqueRepository.findById(item.getIdEstoque())
-                            .orElseThrow(() -> new EntitiesNotFoundException("Estoque não registrado."));
+            StockEntity stock = stockRepository.findById(item.getIdStock())
+                            .orElseThrow(() -> new EntitiesNotFoundException("Stock not found."));
 
-            OrderStockEntity pedidoEstoqueEntity = new OrderStockEntity(
-                    novoPedido,
-                    estoque,
-                    item.getQuantidadeDeCompra(),
-                    estoque.getProduto().getPreco()*item.getQuantidadeDeCompra(),
-                    estoque.getTamanho()
+            OrderStockEntity orderStockEntity = new OrderStockEntity(
+                    newOrder,
+                    stock,
+                    item.getAmountOfBuying(),
+                    stock.getProduct().getPrice()*item.getAmountOfBuying(),
+                    stock.getSize()
             );
 
-            listaPedidoEstoque.add(pedidoEstoqueEntity);
-            novoPedido.setItens(listaPedidoEstoque);
-            novoPedido.setPrecoTotalProdutos(valorAtual += pedidoEstoqueEntity.getPreco());
+            orderStockList.add(orderStockEntity);
+            newOrder.setItems(orderStockList);
+            newOrder.setPriceTotalProducts(currentValue += orderStockEntity.getPricec());
 
         }
 
-        novoPedido.setItens(listaPedidoEstoque);
+        newOrder.setItems(orderStockList);
 
-        OrderEntity pedidoSalvo = pedidoRepository.save(novoPedido);
+        OrderEntity savedOrder = orderRepository.save(newOrder);
 
-        return ConversorMapper.converterPedidoOutputDTO(pedidoSalvo);
+        return ConversorMapper.converterPedidoOutputDTO(savedOrder);
     }
 
-    public OrderOutputDTO confirmPayment(Integer idPedido) throws MessagingException {
-        Optional<OrderEntity> pedidoEntityOptional = pedidoRepository.findById(idPedido);
+    public OrderOutputDTO confirmPayment(Integer idOrder) throws MessagingException {
+        OrderEntity orderEntity = orderRepository.findById(idOrder).orElseThrow(() -> new EntitiesNotFoundException("Order not found."));
 
-        if(pedidoEntityOptional.isEmpty()){
-            throw new EntitiesNotFoundException("Pedido não encontrado.");
-        }
+        orderEntity.setStatus(OrderStatus.PAGO);
 
-        OrderEntity pedidoPagar = pedidoEntityOptional.get();
+        OrderEntity orderPaid = orderRepository.save(orderEntity);
 
-        pedidoPagar.setStatus(OrderStatus.PAGO);
+//        emailService.sendNote();
 
-        OrderEntity pedidoPago = pedidoRepository.save(pedidoPagar);
-
-        emailService.sendNote();
-
-        return ConversorMapper.converter(pedidoPago, OrderOutputDTO.class);
+        return ConversorMapper.converter(orderPaid, OrderOutputDTO.class);
 
     }
 }

@@ -21,52 +21,52 @@ public class OrderStockEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private OrderStockPrimaryKey pedidoEstoquePK = new OrderStockPrimaryKey();
+    private OrderStockPrimaryKey orderStockPK = new OrderStockPrimaryKey();
 
     @Setter
     @Getter
     @Column(name = "QUANTIDADE")
-    private Integer quantidade;
+    private Integer quantity;
 
     @Getter
     @Setter
     @Column(name = "TAMANHO")
-    private String tamanho;
+    private String size;
 
     @Setter
     @Getter
     @Column(name = "PRECO")
-    private Double preco;
+    private Double pricec;
 
     public OrderStockEntity(OrderEntity pedido, StockEntity estoque,
-                            Integer quantidade, Double preco, String tamanho) {
+                            Integer quantity, Double pricec, String size) {
         super();
-        pedidoEstoquePK.setPedido(pedido);
-        pedidoEstoquePK.setEstoque(estoque);
-        this.quantidade = quantidade;
-        this.preco = preco;
-        this.tamanho = tamanho;
+        orderStockPK.setOrder(pedido);
+        orderStockPK.setStock(estoque);
+        this.quantity = quantity;
+        this.pricec = pricec;
+        this.size = size;
     }
 
     @JsonIgnore
     public OrderEntity getPedido(){
-        return pedidoEstoquePK.getPedido();
+        return orderStockPK.getOrder();
     }
 
     public void setPedido(OrderEntity pedido){
-        pedidoEstoquePK.setPedido(pedido);
+        orderStockPK.setOrder(pedido);
     }
 
     public StockEntity getEstoque(){
-        return pedidoEstoquePK.getEstoque();
+        return orderStockPK.getStock();
     }
 
     public void setEstoque(StockEntity estoque){
-        pedidoEstoquePK.setEstoque(estoque);
+        orderStockPK.setStock(estoque);
     }
 
     public Double getSubtotal(){
-        return this.preco * this.quantidade;
+        return this.pricec * this.quantity;
     }
 
     @Override
@@ -74,11 +74,11 @@ public class OrderStockEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderStockEntity pedidoProdutoDisponivel = (OrderStockEntity) o;
-        return Objects.equals(pedidoEstoquePK, pedidoProdutoDisponivel.pedidoEstoquePK);
+        return Objects.equals(orderStockPK, pedidoProdutoDisponivel.orderStockPK);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pedidoEstoquePK);
+        return Objects.hash(orderStockPK);
     }
 }

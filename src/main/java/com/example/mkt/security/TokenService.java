@@ -35,7 +35,7 @@ public class TokenService {
 
     public String generateToken(UserEntity usuarioEntity) {
         Date now = new Date();
-        boolean visitor = usuarioEntity.getCargos().stream().filter(cargo -> cargo.getNome().equals("RULE_VISITOR")).toList().isEmpty();
+        boolean visitor = usuarioEntity.getCargos().stream().filter(cargo -> cargo.getName().equals("RULE_VISITOR")).toList().isEmpty();
         Date exp;
 
         if (visitor) {
@@ -51,7 +51,7 @@ public class TokenService {
         return TOKEN_PREFIX + " " +
                 Jwts.builder()
                         .setIssuer("vemser-api")
-                        .claim(Claims.ID, usuarioEntity.getIdUsuario().toString())
+                        .claim(Claims.ID, usuarioEntity.getIdUser().toString())
                         .claim(CARGOS_CLAIM, cargos)
                         .setIssuedAt(now)
                         .setExpiration(exp)

@@ -14,5 +14,5 @@ import java.util.List;
 @Setter
 public class OrderInputDTO {
 
-    private List<OrderStockInputDTO> itens;
+    private List<OrderStockInputDTO> items;
 }

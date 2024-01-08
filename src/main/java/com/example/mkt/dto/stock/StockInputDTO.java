@@ -17,13 +17,13 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class StockInputDTO {
 
-    @NotEmpty(message = "O tamanho deve ser preenchido corretamente.")
-    @NotNull(message = "O tamanho deve ser preenchido corretamente.")
-    @NotBlank(message = "O tamanho deve ser preenchido corretamente.")
-    @Size(min = 1, message = "O tamanho deve ser preenchido corretamente.")
-    private String tamanho;
+    @NotEmpty(message = "Size must be filled correctly.")
+    @NotNull(message = "Size must be filled correctly.")
+    @NotBlank(message = "Size must be filled correctly.")
+    @Size(min = 1, message = "Size must be filled correctly.")
+    private String size;
 
     @NumberFormat
-    @Size(min = 1, message = "Quantidade deve ser inserida corretamente.")
-    private Integer quantidade;
+    @Size(min = 1, message = "Quantity must be filled correctly.")
+    private Integer quantity;
 }

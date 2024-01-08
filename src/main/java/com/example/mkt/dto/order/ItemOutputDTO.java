@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ItemOutputDTO {
 
-    private Integer idProduto;
-    private String nomeProduto;
+    private Integer idProduct;
+    private String nameProduct;
     private Integer Quantity;
     private Double productsPrice;
 

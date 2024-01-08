@@ -13,13 +13,13 @@ import org.springframework.beans.BeanUtils;
 @Setter
 public class ProductOutputDTO {
 
-    private Integer idProduto;
+    private Integer idProduct;
 
-    private String nomeProduto;
+    private String nameProduct;
 
-    private Double preco;
+    private Double price;
 
-    private String descricao;
+    private String description;
 
     public ProductOutputDTO(ProductEntity entity) {
         BeanUtils.copyProperties(entity, this);

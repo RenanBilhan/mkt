@@ -37,7 +37,7 @@ public class ClientController implements ClientControllerDoc {
 
     @GetMapping("/foto/{idClient}")
     public ResponseEntity<String> findClienteFoto(@PathVariable @Positive Integer idClient) throws BussinessRuleException {
-        String foto = clientService.findClienteFoto(idClient);
+        String foto = clientService.findClientPhoto(idClient);
         return new ResponseEntity<>(foto, HttpStatus.OK);
     }
 
@@ -53,6 +53,6 @@ public class ClientController implements ClientControllerDoc {
 
     @PutMapping("/{idClient}/foto")
     public ResponseEntity<StatusMessage> updateFoto(@RequestBody MultipartFile photo, @PathVariable @Positive(message = "Formato de ID não aceito.") Integer idClient) throws FormatNotValid, IOException {
-        return new ResponseEntity<>(clientService.updateFotoCliente(photo, idClient), HttpStatus.OK);
+        return new ResponseEntity<>(clientService.updatePhotoClient(photo, idClient), HttpStatus.OK);
     }
 }

@@ -19,25 +19,25 @@ import java.util.Set;
 @Setter
 public class ClientOutputDTO {
 
-    private Integer idCliente;
-    private String nomeCliente;
-    private String emailCliente;
+    private Integer idClient;
+    private String nameClient;
+    private String emailClient;
     private String cpf;
-    private LocalDate dataNascimento;
-    private String genero;
-    private Set<AddressEntity> enderecos = new HashSet<>();
-    private String fotoClienteString;
-    private String telefone;
+    private LocalDate dateOfBirth;
+    private String gender;
+    private Set<AddressEntity> addresses = new HashSet<>();
+    private String photoClientString;
+    private String phoneNumber;
 
     public ClientOutputDTO(ClientEntity entity){
         BeanUtils.copyProperties(entity, this);
         String fotoString;
-        if(entity.getFotoCliente() == null){
+        if(entity.getPhotoClient() == null){
             fotoString = null;
         }else{
-            fotoString = ConversorImage.converterParaBase(entity.getFotoCliente());
+            fotoString = ConversorImage.converterParaBase(entity.getPhotoClient());
         }
-        this.setFotoClienteString(fotoString);
+        this.setPhotoClientString(fotoString);
     }
 
 

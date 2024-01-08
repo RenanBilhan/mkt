@@ -26,7 +26,7 @@ public class AuthController {
     public String auth (@RequestBody @Valid LoginInputDTO loginInputDTO) throws Exception {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                 loginInputDTO.getLogin(),
-                loginInputDTO.getSenha()
+                loginInputDTO.getPassword()
         );
 
         Authentication authentication =
@@ -35,7 +35,7 @@ public class AuthController {
 
         UserEntity validatedUser = (UserEntity) authentication.getPrincipal();
 
-        if(validatedUser.getCargos().stream().toList().get(0).getNome().equals("ROLE_DESATIVADO")){
+        if(validatedUser.getCargos().stream().toList().get(0).getName().equals("ROLE_DESATIVADO")){
             throw new Exception("Unactive user");
         }
         return tokenService.generateToken(validatedUser);

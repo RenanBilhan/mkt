@@ -21,28 +21,28 @@ public class AddressEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ENDERECO_SEQ")
     @SequenceGenerator(name = "ENDERECO_SEQ", sequenceName = "SEQ_ENDERECO", allocationSize = 1)
     @Column(name = "ID_ENDERECO")
-    private Integer idEndereco;
+    private Integer idAddress;
 
     @Column(name = "LOGRADOURO")
-    private String logradouro;
+    private String street;
 
     @Column(name = "NUMERO")
-    private String numero;
+    private String number;
 
     @Column(name = "COMPLEMENTO")
-    private String complemento;
+    private String complement;
 
     @Column(name = "CEP")
-    private String cep;
+    private String zipCode;
 
     @Column(name = "CIDADE")
-    private String cidade;
+    private String city;
 
     @Column(name = "ESTADO")
-    private String estado;
+    private String state;
 
     @Column(name = "UF")
-    private String uf;
+    private String federalUnity;
 
     @JsonIgnore
     @ManyToMany
@@ -51,5 +51,5 @@ public class AddressEntity {
             joinColumns = @JoinColumn(name = "ID_ENDERECO"),
             inverseJoinColumns = @JoinColumn(name = "ID_CLIENTE")
     )
-    private Set<ClientEntity> clientes = new HashSet<>();
+    private Set<ClientEntity> clients = new HashSet<>();
 }

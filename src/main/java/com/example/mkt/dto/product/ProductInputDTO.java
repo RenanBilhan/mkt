@@ -17,18 +17,18 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 public class ProductInputDTO {
 
-    @NotNull(message = "Produto deve ter um nome(null)")
-    @NotBlank(message = "Produto deve ter um nome(blank)")
-    @NotEmpty(message = "Produto deve ter um nome(empty)")
-    @Schema(description = "Nome do produto", required = true)
-    private String nomeProduto;
+    @NotNull(message = "Product must have a name(null)")
+    @NotBlank(message = "Product must have a name(blank)")
+    @NotEmpty(message = "Product must have a name(empty)")
+    @Schema(description = "Product's name", required = true)
+    private String nameProduct;
 
-    @Positive(message = "Preco deve ser descrito")
-    @Schema(description = "Preco do produto", required = true)
+    @Positive(message = "Product must have a valid price")
+    @Schema(description = "Product price", required = true)
     private Double preco;
 
-    @NotNull(message = "Produto deve ter uma descricao")
-    @NotEmpty(message = "Produto deve ter uma descricao")
-    @Schema(description = "Descricao do produto", required = true)
+    @NotNull(message = "Product must have a description")
+    @NotEmpty(message = "Product must have a description")
+    @Schema(description = "Product's description", required = true)
     private String descricao;
 }

@@ -47,6 +47,6 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserOutputDTO> save(@RequestBody @Valid LoginInputDTO loginInputDTO, Role cargo){
-        return new ResponseEntity<>(usuarioService.cadastrarAdmin(loginInputDTO, cargo), HttpStatus.CREATED);
+        return new ResponseEntity<>(usuarioService.registerAdmin(loginInputDTO, cargo), HttpStatus.CREATED);
     }
 }

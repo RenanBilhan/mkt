@@ -30,128 +30,108 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ClientService {
 
-    private final ClientRepository clienteRepository;
-    private final UserRepository usuarioRepository;
+    private final ClientRepository clientRepository;
+    private final UserRepository userRepository;
 
     public List<ClientOutputDTO> findAll(){
-        return clienteRepository.findAll().stream()
+        return clientRepository.findAll().stream()
                 .map(ClientOutputDTO::new)
                 .collect(Collectors.toList());
     }
 
-    public ClientOutputDTO findById(Integer idCliente){
+    public ClientOutputDTO findById(Integer idClient){
 
-        Optional<ClientEntity> clienteEntityOptional = clienteRepository.findById(idCliente);
+        ClientEntity clientEntity = clientRepository.findById(idClient).orElseThrow(() -> new EntitiesNotFoundException("Client not found."));
 
-        if(clienteEntityOptional.isEmpty()){
-            throw new EntitiesNotFoundException("Cliente não encontrado");
-        }
-
-        return ConversorMapper.converterClienteParaDTO(clienteEntityOptional.get());
+        return ConversorMapper.converterClienteParaDTO(clientEntity);
     }
 
-    public String findClienteFoto(Integer idCliente) throws BussinessRuleException {
+    public String findClientPhoto(Integer idClient) throws BussinessRuleException {
 
-        Optional<ClientEntity> clienteOptional = clienteRepository.findById(idCliente);
+        ClientEntity client = clientRepository.findById(idClient).orElseThrow(() -> new EntitiesNotFoundException("Client not found."));
 
-        if(clienteOptional.isEmpty()){
-            throw new EntitiesNotFoundException("Cliente não encontrado.");
+        if(client.getPhotoClient() == null){
+            throw new EntitiesNotFoundException("Client has no photo.");
         }
 
-        ClientEntity cliente = clienteOptional.get();
+        byte[] photoByte = Base64.encodeBase64(client.getPhotoClient());
+        String photoString = new String(photoByte);
 
-        if(cliente.getFotoCliente() == null){
-            throw new BussinessRuleException("Cliente não tem foto.");
-        }
-
-        byte[] fotoByte = Base64.encodeBase64(cliente.getFotoCliente());
-        String fotoString = new String(fotoByte);
-
-        return fotoString;
+        return photoString;
     }
 
-    public ClientOutputDTO save(ClientInputDTO clienteInputDTO, Integer idUsuario, PersonGender generoPessoa){
-        ClientEntity novoCliente = new ClientEntity();
+    public ClientOutputDTO save(ClientInputDTO clientInputDTO, Integer idUser, PersonGender personGender){
+        ClientEntity newClient = new ClientEntity();
 
-        novoCliente.setUsuarioEntity(usuarioRepository.findById(idUsuario).get());
-        novoCliente.setGenero(generoPessoa.toString());
-        novoCliente.setNomeCliente(clienteInputDTO.getNameClient());
-        novoCliente.setEmailCliente(clienteInputDTO.getEmailClient());
-        novoCliente.setCpf(clienteInputDTO.getCpf());
-        novoCliente.setDataNascimento(clienteInputDTO.getDateOfBirth());
-        novoCliente.setTelefone(clienteInputDTO.getPhoneNumber());
+        newClient.setUserEntity(userRepository.findById(idUser).get());
+        newClient.setGender(personGender.toString());
+        newClient.setNameClient(clientInputDTO.getNameClient());
+        newClient.setEmailClient(clientInputDTO.getEmailClient());
+        newClient.setCpf(clientInputDTO.getCpf());
+        newClient.setDateOfBirth(clientInputDTO.getDateOfBirth());
+        newClient.setPhoneNumber(clientInputDTO.getPhoneNumber());
 
-        ClientEntity clienteSalvo = clienteRepository.save(novoCliente);
-        ClientOutputDTO retorno = new ClientOutputDTO();
-        BeanUtils.copyProperties(clienteSalvo, retorno);
-        return retorno;
+        ClientEntity savedClient = clientRepository.save(newClient);
+        ClientOutputDTO clientReturn = new ClientOutputDTO();
+        BeanUtils.copyProperties(savedClient, clientReturn);
+        return clientReturn;
     }
 
-    public ClientOutputDTO update(Integer idCliente, ClientInputDTO clienteInputDTO, PersonGender generoPessoa){
-        Optional<ClientEntity> clienteAtualizarOptional = clienteRepository.findById(idCliente);
+    public ClientOutputDTO update(Integer idClient, ClientInputDTO clientInputDTO, PersonGender personGender){
+        ClientEntity clientToUpdate = clientRepository.findById(idClient).orElseThrow(() -> new EntitiesNotFoundException("Client not found."));
 
-        if(clienteAtualizarOptional.isEmpty()){
-            throw new EntitiesNotFoundException("Cliente não encontrado.");
+        String nameClient = clientInputDTO.getNameClient();
+
+        String emailClient = clientInputDTO.getEmailClient();
+
+        String cpf = clientInputDTO.getCpf();
+
+        LocalDate dateOfBirth = clientInputDTO.getDateOfBirth();
+
+        String personGenderString = personGender.toString();
+
+        String phoneNumber = clientInputDTO.getPhoneNumber();
+
+        if(!clientToUpdate.getNameClient().equals(nameClient)){
+            clientToUpdate.setNameClient(nameClient);
+        }
+        if(!clientToUpdate.getEmailClient().equals(emailClient)){
+            clientToUpdate.setEmailClient(emailClient);
+        }
+        if(!clientToUpdate.getCpf().equals(cpf)){
+            clientToUpdate.setCpf(cpf);
+        }
+        if(!clientToUpdate.getDateOfBirth().toString().equals(dateOfBirth.toString())){
+            clientToUpdate.setDateOfBirth(dateOfBirth);
+        }
+        if(!clientToUpdate.getGender().equals(personGenderString)){
+            clientToUpdate.setGender(personGenderString);
+        }
+        if(!clientToUpdate.getPhoneNumber().equals(phoneNumber)){
+            clientToUpdate.setPhoneNumber(phoneNumber);
         }
 
-        ClientEntity clienteAtualizar = clienteAtualizarOptional.get();
-
-        String nomeCliente = clienteInputDTO.getNameClient();
-
-        String emailCliente = clienteInputDTO.getEmailClient();
-
-        String cpf = clienteInputDTO.getCpf();
-
-        LocalDate dataNascimento = clienteInputDTO.getDateOfBirth();
-
-        String genero = generoPessoa.toString();
-
-        String telefone = clienteInputDTO.getPhoneNumber();
-
-        if(!clienteAtualizar.getNomeCliente().equals(nomeCliente)){
-            clienteAtualizar.setNomeCliente(nomeCliente);
-        }
-        if(!clienteAtualizar.getEmailCliente().equals(emailCliente)){
-            clienteAtualizar.setEmailCliente(emailCliente);
-        }
-        if(!clienteAtualizar.getCpf().equals(cpf)){
-            clienteAtualizar.setCpf(cpf);
-        }
-        if(!clienteAtualizar.getDataNascimento().toString().equals(dataNascimento.toString())){
-            clienteAtualizar.setDataNascimento(dataNascimento);
-        }
-        if(!clienteAtualizar.getGenero().equals(genero)){
-            clienteAtualizar.setGenero(genero);
-        }
-        if(!clienteAtualizar.getTelefone().equals(telefone)){
-            clienteAtualizar.setTelefone(telefone);
-        }
-
-        ClientEntity clienteAtulizado = clienteRepository.save(clienteAtualizar);
-        ClientOutputDTO retorno = new ClientOutputDTO();
-        BeanUtils.copyProperties(clienteAtulizado, retorno);
-        return retorno;
+        ClientEntity updatedClient = clientRepository.save(clientToUpdate);
+        ClientOutputDTO clientReturn = new ClientOutputDTO();
+        BeanUtils.copyProperties(updatedClient, clientReturn);
+        return clientReturn;
     }
 
-    public StatusMessage updateFotoCliente(MultipartFile fotoPerfil, Integer idCliente) throws FormatNotValid, IOException {
-        Optional<ClientEntity> clienteEntityOptional = clienteRepository.findById(idCliente);
+    public StatusMessage updatePhotoClient(MultipartFile photoProfile, Integer idClient) throws FormatNotValid, IOException {
+        ClientEntity clientEntity = clientRepository.findById(idClient).orElseThrow(() -> new EntitiesNotFoundException("Client not found."));
 
-        if(clienteEntityOptional.isEmpty()){
-            throw new EntitiesNotFoundException("Cliente não encontrado.");
-        }
-        if(!ConversorImage.isImageFile(fotoPerfil)){
-            throw new FormatNotValid("Formato de arquivo não suportado.");
+        if(!ConversorImage.isImageFile(photoProfile)){
+            throw new FormatNotValid("File format not suported.");
         }
 
-        byte[] foto = ConversorImage.converterParaImagem(fotoPerfil);
+        byte[] photo = ConversorImage.converterParaImagem(photoProfile);
 
-        ClientEntity clienteAtualizado = clienteEntityOptional.get();
-        clienteAtualizado.setFotoCliente(foto);
+        clientEntity.setPhotoClient(photo);
 
-        clienteRepository.save(clienteAtualizado);
+        ClientEntity updatedClient = clientRepository.save(clientEntity);
 
         HttpStatus status = HttpStatus.OK;
-        StatusMessage statusMessage = new StatusMessage(Instant.now(), status.value(), "Foto atualizada com sucesso.");
+        StatusMessage statusMessage = new StatusMessage(Instant.now(), status.value(), "Photo updated successful.");
 
         return statusMessage;
     }

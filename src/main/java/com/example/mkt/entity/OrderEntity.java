@@ -22,41 +22,41 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PEDIDO_SEQ")
     @SequenceGenerator(name = "PEDIDO_SEQ", sequenceName = "seq_pedido", allocationSize = 1)
     @Column(name = "ID_PEDIDO")
-    private Integer idPedido;
+    private Integer idOrder;
 
     @Column(name = "FRETE")
-    private Double frete;
+    private Double freight;
 
     @Column(name = "PRECO_TOTAL_PRODUTOS")
-    private Double precoTotalProdutos;
+    private Double priceTotalProducts;
 
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Column(name = "ID_PAGAMENTO_STRIPE")
-    private String idPagamentoStripe;
+    private String idStripePayment;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE")
-    private ClientEntity cliente;
+    private ClientEntity client;
 
     @JsonIgnore
     @OneToMany(mappedBy = "pedidoEstoquePK.pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderStockEntity> itens;
+    private List<OrderStockEntity> items;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderEntity that = (OrderEntity) o;
-        return Objects.equals(getIdPedido(), that.getIdPedido());
+        return Objects.equals(getIdOrder(), that.getIdOrder());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdPedido());
+        return Objects.hash(getIdOrder());
     }
 
 }

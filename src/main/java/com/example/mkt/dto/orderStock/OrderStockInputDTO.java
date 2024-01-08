@@ -17,11 +17,11 @@ public class OrderStockInputDTO {
 
     @NotNull
     @Positive
-    @Schema(description = "Identificador do produto disponível", required = true)
-    private Integer idEstoque;
+    @Schema(description = "Stock identificator", required = true)
+    private Integer idStock;
 
     @NotNull
     @Positive
-    @Schema(description = "Quantidade de unidades do produto que serão compradas", required = true)
-    private Integer quantidadeDeCompra;
+    @Schema(description = "Amount to be purchased", required = true)
+    private Integer amountOfBuying;
 }

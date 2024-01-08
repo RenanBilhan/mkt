@@ -16,22 +16,22 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderOutputDTO {
 
-    private Integer idPedido;
+    private Integer idOrder;
 
-    private String nomeCliente;
+    private String nameClient;
 
-    private Double frete;
+    private Double freight;
 
-    private List<ItemOutputDTO> itens;
+    private List<ItemOutputDTO> items;
 
-    private Double precoTotalProdutos;
+    private Double pricecTotalProducts;
 
     private String status;
 
     public OrderOutputDTO(OrderEntity entity) {
         BeanUtils.copyProperties(entity, this);
-        this.setItens(ConversorMapper.convertItensToItemOutputDTO(entity.getItens()));
-        this.setNomeCliente(entity.getCliente().getNomeCliente());
+        this.setItems(ConversorMapper.convertItensToItemOutputDTO(entity.getItems()));
+        this.setNameClient(entity.getClient().getNameClient());
         this.setStatus(entity.getStatus().toString());
     }
 }

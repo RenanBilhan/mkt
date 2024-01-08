@@ -13,21 +13,21 @@ import org.springframework.beans.BeanUtils;
 @Setter
 public class AddressOutputDTO {
 
-    private Integer idEndereco;
+    private Integer idAddress;
 
-    private String logradouro;
+    private String Street;
 
-    private String numero;
+    private String number;
 
-    private String complemento;
+    private String complement;
 
-    private String cep;
+    private String zipCode;
 
-    private String cidade;
+    private String city;
 
-    private String estado;
+    private String state;
 
-    private String uf;
+    private String federalUnity;
 
     public AddressOutputDTO(AddressEntity enderecoEntity) {
         BeanUtils.copyProperties(enderecoEntity, this);

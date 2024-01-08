@@ -23,25 +23,25 @@ public class StockEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ESTOQUE_SEQ")
     @SequenceGenerator(name = "ESTOQUE_SEQ", sequenceName = "SEQ_ESTOQUE", allocationSize = 1)
     @Column(name = "ID_ESTOQUE")
-    private Integer idEstoque;
+    private Integer idStock;
 
-    private String tamanho;
+    private String size;
 
-    private Integer quantidade;
+    private Integer quantity;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID_PRODUTO")
-    private ProductEntity produto;
+    private ProductEntity product;
 
     @JsonIgnore
     @OneToMany(mappedBy = "pedidoEstoquePK.estoque", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderStockEntity> pedidos;
+    private List<OrderStockEntity> orders;
 
     @JsonIgnore
     public List<OrderEntity> getListaPedidoEntity(){
         List<OrderEntity> lista = new ArrayList<>();
-        for (OrderStockEntity x : pedidos){
+        for (OrderStockEntity x : orders){
             lista.add(x.getPedido());
         }
         return lista;
@@ -52,10 +52,10 @@ public class StockEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StockEntity that = (StockEntity) o;
-        return Objects.equals(getIdEstoque(), that.getIdEstoque());
+        return Objects.equals(getIdStock(), that.getIdStock());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdEstoque());}
+        return Objects.hash(getIdStock());}
 }

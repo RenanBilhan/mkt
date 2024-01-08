@@ -19,64 +19,59 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddressService {
 
-    private final AddressRepository enderecoRepository;
-    private final ClientRepository clienteRepository;
-    private final ClientService clienteService;
+    private final AddressRepository addressRepository;
+    private final ClientRepository clientRepository;
 
     public List<AddressOutputDTO> findAll(){
-        return enderecoRepository.findAll().stream()
+        return addressRepository.findAll().stream()
                 .map(AddressOutputDTO::new)
                 .collect(Collectors.toList());
     }
 
-    public AddressOutputDTO save(AddressInputDTO enderecoInputDTO, Integer idCliente){
+    public AddressOutputDTO save(AddressInputDTO addressInputDTO, Integer idClient){
 
-        Optional<ClientEntity> clienteOptional = clienteRepository.findById(idCliente);
+        Optional<ClientEntity> clienteOptional = clientRepository.findById(idClient);
 
         if(clienteOptional.isEmpty()){
-            throw new EntitiesNotFoundException("Cliente não encontrado.");
+            throw new EntitiesNotFoundException("Client not found.");
         }
 
-        ClientEntity cliente = clienteOptional.get();
+        ClientEntity client = clienteOptional.get();
 
-        AddressEntity enderecoEntity = new AddressEntity();
-        BeanUtils.copyProperties(enderecoInputDTO, enderecoEntity);
-        enderecoEntity.getClientes().add(cliente);
+        AddressEntity addressEntity = new AddressEntity();
+        BeanUtils.copyProperties(addressInputDTO, addressEntity);
+        addressEntity.getClients().add(client);
 
-        AddressEntity enderecoSalvo = enderecoRepository.save(enderecoEntity);
-        AddressOutputDTO retorno = ConversorMapper.converter(enderecoSalvo, AddressOutputDTO.class);
+        AddressEntity savedAddress = addressRepository.save(addressEntity);
+        AddressOutputDTO retorno = ConversorMapper.converter(savedAddress, AddressOutputDTO.class);
 
         return retorno;
     }
 
-    public AddressOutputDTO findById(Integer idEndereco){
-        Optional<AddressEntity> enderecoEntityOptional = enderecoRepository.findById(idEndereco);
+    public AddressOutputDTO findById(Integer idAddress){
+        AddressEntity addressEntity = addressRepository.findById(idAddress).orElseThrow(() -> new EntitiesNotFoundException("Endereço não encontrado."));
 
-        if (enderecoEntityOptional.isEmpty()){
-            throw new EntitiesNotFoundException("Endereço não encontrado.");
-        }
-
-        return ConversorMapper.converter(enderecoEntityOptional.get(), AddressOutputDTO.class);
+        return ConversorMapper.converter(addressEntity, AddressOutputDTO.class);
     }
 
-    public List<AddressOutputDTO> findByIdCliente(Integer idCliente){
-        List<AddressEntity> enderecoEntityList = enderecoRepository.findAll();
-        List<AddressEntity> enderecoRetorno = new ArrayList<>();
+    public List<AddressOutputDTO> findByIdCliente(Integer idClient){
+        List<AddressEntity> addressEntityList = addressRepository.findAll();
+        List<AddressEntity> addressReturn = new ArrayList<>();
 
-        if(clienteRepository.findById(idCliente).isEmpty()){
+        if(clientRepository.findById(idClient).isEmpty()){
             throw new EntitiesNotFoundException("Cliente não encontrado.");
         }
 
-        for (AddressEntity enderecoEntity: enderecoEntityList) {
-            Set<ClientEntity> clienteList = enderecoEntity.getClientes();
-            for (ClientEntity cliente: clienteList){
-                if(cliente.getIdCliente() == idCliente){
-                    enderecoRetorno.add(enderecoEntity);
+        for (AddressEntity addressEntity: addressEntityList) {
+            Set<ClientEntity> clientList = addressEntity.getClients();
+            for (ClientEntity client: clientList){
+                if(client.getIdClient() == idClient){
+                    addressReturn.add(addressEntity);
                 }
             }
         }
 
-        return enderecoRetorno.stream()
+        return addressReturn.stream()
                 .map(AddressOutputDTO::new)
                 .collect(Collectors.toList());
     }

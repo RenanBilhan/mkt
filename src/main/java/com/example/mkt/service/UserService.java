@@ -24,17 +24,17 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository usuarioRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepository cargoRepository;
+    private final RoleRepository roleRepository;
     private final GetContextUser getContextUser;
 
     public Optional<UserEntity> findByLogin(String login){
-        return usuarioRepository.findByLogin(login);
+        return userRepository.findByLogin(login);
     }
 
     public List<UserOutputDTO> findAll(){
-        return usuarioRepository.findAll().stream()
+        return userRepository.findAll().stream()
                 .map(UserOutputDTO::new)
                 .collect(Collectors.toList());
 
@@ -44,55 +44,51 @@ public class UserService {
         try{
             return getContextUser.idLogedUser();
         }catch (Exception e){
-            throw new BussinessRuleException("Nenhum usuario logado");
+            throw new BussinessRuleException("No logged user.");
         }
     }
 
     public LoggedinUserDTO getLogedUser() throws BussinessRuleException {
 
-        LoggedinUserDTO usuarioLogadoDTO = new LoggedinUserDTO();
+        LoggedinUserDTO loggedinUserDTO = new LoggedinUserDTO();
 
         try {
-            BeanUtils.copyProperties(getById(getContextUser.idLogedUser()), usuarioLogadoDTO);
-            return usuarioLogadoDTO;
+            BeanUtils.copyProperties(getById(getContextUser.idLogedUser()), loggedinUserDTO);
+            return loggedinUserDTO;
         }catch (Exception e){
-            throw new BussinessRuleException("Nenhum usuario logado.");
+            throw new BussinessRuleException("No logged user.");
         }
     }
 
-    public UserOutputDTO getById(Integer idUsuario){
+    public UserOutputDTO getById(Integer idUser){
 
-        Optional<UserEntity> optionalUsuarioEntity = usuarioRepository.findById(idUsuario);
+        Optional<UserEntity> optionalUsuarioEntity = userRepository.findById(idUser);
 
         if(optionalUsuarioEntity.isEmpty()){
-            throw new EntitiesNotFoundException("Usuario não encontrado.");
+            throw new EntitiesNotFoundException("User not found.");
         }
 
         return ConversorMapper.converterUsuarioParaDTO(optionalUsuarioEntity.get());
     }
 
-    public UserOutputDTO cadastrarAdmin(LoginInputDTO loginInputDTO, Role cargo){
+    public UserOutputDTO registerAdmin(LoginInputDTO loginInputDTO, Role role){
 
-        UserEntity novoUsuario = new UserEntity();
-        String senhaCript = passwordEncoder.encode(loginInputDTO.getSenha());
-        Optional<RoleEntity> optionalCargoEntity = cargoRepository.findByNome(cargo.toString());
+        UserEntity newUser = new UserEntity();
+        String passwordCript = passwordEncoder.encode(loginInputDTO.getPassword());
+        RoleEntity cargoEntity = roleRepository.findByNome(role.toString()).orElseThrow(() -> new EntitiesNotFoundException("Role not found."));
 
-        if(optionalCargoEntity.isEmpty()){
-            throw new EntitiesNotFoundException("Cargo não encontrado.");
-        }
+        newUser.setLogin(loginInputDTO.getLogin());
+        newUser.setPassword(passwordCript);
+        newUser.getCargos().add(cargoEntity);
 
-        novoUsuario.setLogin(loginInputDTO.getLogin());
-        novoUsuario.setSenha(senhaCript);
-        novoUsuario.getCargos().add(optionalCargoEntity.get());
+        UserEntity savedUser = userRepository.save(newUser);
+        UserOutputDTO userReturn = ConversorMapper.converter(newUser, UserOutputDTO.class);
 
-        UserEntity usuarioSalvo = usuarioRepository.save(novoUsuario);
-        UserOutputDTO retorno = ConversorMapper.converter(novoUsuario, UserOutputDTO.class);
-
-        retorno.getCargo().add(usuarioSalvo.getCargos().stream()
+        userReturn.getRole().add(savedUser.getCargos().stream()
                 .findFirst()
-                .orElseThrow(() -> new EntitiesNotFoundException("Cargo Não encontrado")));
+                .orElseThrow(() -> new EntitiesNotFoundException("Role not found.")));
 
-        return retorno;
+        return userReturn;
     }
 
 }

@@ -22,23 +22,23 @@ public class OrderStockPrimaryKey implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ID_PEDIDO")
-    private OrderEntity pedido;
+    private OrderEntity order;
 
     @ManyToOne
     @JoinColumn(name = "ID_ESTOQUE")
-    private StockEntity estoque;
+    private StockEntity stock;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderStockPrimaryKey that = (OrderStockPrimaryKey) o;
-        return Objects.equals(pedido, that.pedido) && Objects.equals(estoque, that.estoque);
+        return Objects.equals(order, that.order) && Objects.equals(stock, that.stock);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pedido, estoque);
+        return Objects.hash(order, stock);
     }
 
 }

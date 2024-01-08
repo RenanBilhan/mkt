@@ -11,13 +11,13 @@ import lombok.Setter;
 @Setter
 public class OrderStockOutputDTO {
 
-    private Integer idPedido;
+    private Integer idOrder;
 
-    private Integer idProduto;
+    private Integer idProduct;
 
-    private Integer quantidade;
+    private Integer quantity;
 
-    private String tamanho;
+    private String size;
 
-    private Double preco;
+    private Double price;
 }

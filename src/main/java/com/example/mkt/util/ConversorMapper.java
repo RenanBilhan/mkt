@@ -22,51 +22,51 @@ public class ConversorMapper {
     }
 
     @SneakyThrows
-    public static <TipoEntrada, TipoSaida> TipoSaida converter(TipoEntrada entrada, Class<TipoSaida> saida){
-        return objectMapper.convertValue(entrada, saida);
+    public static <TipoEntrada, TipoSaida> TipoSaida converter(TipoEntrada entry, Class<TipoSaida> output){
+        return objectMapper.convertValue(entry, output);
     }
 
-    public static OrderOutputDTO converterPedidoOutputDTO(OrderEntity pedido){
-        OrderOutputDTO pedidoOutputDTO = ConversorMapper.converter(pedido, OrderOutputDTO.class);
+    public static OrderOutputDTO converterPedidoOutputDTO(OrderEntity order){
+        OrderOutputDTO orderOutputDTO = ConversorMapper.converter(order, OrderOutputDTO.class);
 
-        pedidoOutputDTO.setNomeCliente(pedido.getCliente().getNomeCliente());
-        List<OrderStockOutputDTO> pedidoEstoqueOutputDTOList = pedido.getItens()
+        orderOutputDTO.setNameClient(order.getClient().getNameClient());
+        List<OrderStockOutputDTO> orderStockOutputDTOList = order.getItems()
                 .stream().map(ConversorMapper::convertPedidoEstoqueToOutput).toList();
-        pedidoOutputDTO.setItens(ConversorMapper.convertItensToItemOutputDTO(pedido.getItens()));
+        orderOutputDTO.setItems(ConversorMapper.convertItensToItemOutputDTO(order.getItems()));
 
-        return pedidoOutputDTO;
+        return orderOutputDTO;
     }
 
     public static UserOutputDTO converterUsuarioParaDTO(UserEntity entity){
-        UserOutputDTO retorno =  objectMapper.convertValue(entity, UserOutputDTO.class);
+        UserOutputDTO userReturn =  objectMapper.convertValue(entity, UserOutputDTO.class);
 
-        retorno.setCargo(entity.getCargos());
-        return retorno;
+        userReturn.setRole(entity.getCargos());
+        return userReturn;
     }
 
     public static ClientOutputDTO converterClienteParaDTO(ClientEntity entity){
 
-        ClientOutputDTO retorno = new ClientOutputDTO();
+        ClientOutputDTO clientReturn = new ClientOutputDTO();
 
-        retorno.setIdCliente(entity.getIdCliente());
-        retorno.setGenero(entity.getGenero());
-        retorno.setNomeCliente(entity.getNomeCliente());
-        retorno.setEmailCliente(entity.getEmailCliente());
-        retorno.setCpf(entity.getCpf());
-        retorno.setDataNascimento(entity.getDataNascimento());
-        retorno.setTelefone(entity.getTelefone());
-        retorno.setEnderecos(entity.getEnderecos());
+        clientReturn.setIdClient(entity.getIdClient());
+        clientReturn.setGender(entity.getGender());
+        clientReturn.setNameClient(entity.getNameClient());
+        clientReturn.setEmailClient(entity.getEmailClient());
+        clientReturn.setCpf(entity.getCpf());
+        clientReturn.setDateOfBirth(entity.getDateOfBirth());
+        clientReturn.setPhoneNumber(entity.getPhoneNumber());
+        clientReturn.setAddresses(entity.getAdresses());
 
-        return retorno;
+        return clientReturn;
     }
 
     public static OrderStockOutputDTO convertPedidoEstoqueToOutput(OrderStockEntity entity){
-        OrderStockOutputDTO pedidoEstoqueOutputDTO = ConversorMapper.converter(entity, OrderStockOutputDTO.class);
+        OrderStockOutputDTO orderStockOutputDTO = ConversorMapper.converter(entity, OrderStockOutputDTO.class);
 
-        pedidoEstoqueOutputDTO.setIdPedido(entity.getPedido().getIdPedido());
-        pedidoEstoqueOutputDTO.setIdProduto(entity.getEstoque().getIdEstoque());
+        orderStockOutputDTO.setIdOrder(entity.getPedido().getIdOrder());
+        orderStockOutputDTO.setIdProduct(entity.getEstoque().getIdStock());
 
-        return pedidoEstoqueOutputDTO;
+        return orderStockOutputDTO;
     }
 
     public static List<ItemOutputDTO> convertItensToItemOutputDTO(List<OrderStockEntity> items){
@@ -75,10 +75,10 @@ public class ConversorMapper {
 
         for(OrderStockEntity item : items){
             ItemOutputDTO itemToAdd = new ItemOutputDTO();
-            itemToAdd.setIdProduto(item.getPedidoEstoquePK().getEstoque().getProduto().getIdProduto());
-            itemToAdd.setQuantity(item.getQuantidade());
-            itemToAdd.setNomeProduto(item.getPedidoEstoquePK().getEstoque().getProduto().getNomeProduto());
-            itemToAdd.setProductsPrice(item.getPedidoEstoquePK().getEstoque().getProduto().getPreco()* itemToAdd.getQuantity());
+            itemToAdd.setIdProduct(item.getOrderStockPK().getStock().getProduct().getIdProduct());
+            itemToAdd.setQuantity(item.getQuantity());
+            itemToAdd.setNameProduct(item.getOrderStockPK().getStock().getProduct().getNameProduct());
+            itemToAdd.setProductsPrice(item.getOrderStockPK().getStock().getProduct().getPrice()* itemToAdd.getQuantity());
             outputDTO.add(itemToAdd);
         }
         return outputDTO;

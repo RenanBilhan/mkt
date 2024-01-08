@@ -20,6 +20,6 @@ public class AuthenticationService implements UserDetailsService {
         Optional<UserEntity> usuarioEntityOptional = usuarioService.findByLogin(username);
 
         return usuarioEntityOptional
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario inválido"));
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid user"));
     }
 }

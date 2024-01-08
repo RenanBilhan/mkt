@@ -20,18 +20,18 @@ public class ProductEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUTO_SEQ")
     @SequenceGenerator(name = "PRODUTO_SEQ", sequenceName = "SEQ_PRODUTO", allocationSize = 1)
     @Column(name = "ID_PRODUTO")
-    private Integer idProduto;
+    private Integer idProduct;
 
     @Column(name = "NOME_PRODUTO")
-    private String nomeProduto;
+    private String nameProduct;
 
     @Column(name = "PRECO")
-    private Double preco;
+    private Double price;
 
     @Column(name = "DESCRICAO")
-    private String descricao;
+    private String description;
 
     @Lob
     @Column(name = "IMAGEM")
-    private byte[] imagem;
+    private byte[] image;
 }

@@ -22,22 +22,22 @@ public class ClientEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENTE_SEQ")
     @SequenceGenerator(name = "CLIENTE_SEQ", sequenceName = "seq_cliente", allocationSize = 1)
     @Column(name = "ID_CLIENTE")
-    private Integer idCliente;
+    private Integer idClient;
 
     @Column(name = "NOME_CLIENTE")
-    private String nomeCliente;
+    private String nameClient;
 
     @Column(name = "EMAIL")
-    private String emailCliente;
+    private String emailClient;
 
     @Column(name = "CPF")
     private String cpf;
 
     @Column(name = "DATA_NASCIMENTO")
-    private LocalDate dataNascimento;
+    private LocalDate dateOfBirth;
 
     @Column(name = "GENERO_CLIENTE")
-    private String genero;
+    private String gender;
 
     @JsonIgnore
     @ManyToMany
@@ -45,22 +45,22 @@ public class ClientEntity {
             joinColumns = @JoinColumn(name = "ID_CLIENTE"),
             inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
     )
-    private Set<AddressEntity> enderecos = new HashSet<>();
+    private Set<AddressEntity> adresses = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
-    private UserEntity usuarioEntity;
+    private UserEntity userEntity;
 
     @Lob
     @Column(name = "FOTO_CLIENTE")
-    private byte[] fotoCliente;
+    private byte[] photoClient;
 
     @Column(name = "TELEFONE")
-    private String telefone;
+    private String phoneNumber;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<OrderEntity> pedidos;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderEntity> orders;
 
 }
