@@ -65,7 +65,7 @@ public interface ClientControllerDoc {
     @PostMapping("/usuario/{idUser}")
     public ResponseEntity<ClientOutputDTO> save(PersonGender personGender, @RequestBody @Valid ClientInputDTO clientInputDTO, @PathVariable Integer idUser);
 
-    @Operation(summary = "Update a client information.", description = "Update a client information in the database. You can send the ClientInputDTO and the client id by the arguments.")
+    @Operation(summary = "Update a client information.", description = "Update a client information in the database. You can send the ClientInputDTO and the client id by the parameters.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Return a ClientOutputDTO with the updated information."),
