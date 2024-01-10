@@ -5,7 +5,6 @@ import com.example.mkt.dto.user.LoggedinUserDTO;
 import com.example.mkt.dto.user.UserOutputDTO;
 import com.example.mkt.entity.enums.Role;
 import com.example.mkt.exceptions.BussinessRuleException;
-import com.example.mkt.repository.RoleRepository;
 import com.example.mkt.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,33 +19,37 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/usuario")
+@RequestMapping("/user")
 public class UserController {
     private final UserService usuarioService;
-    private final RoleRepository cargoRepository;
 
     @GetMapping
     public ResponseEntity<List<UserOutputDTO>> findAll(){
         return new ResponseEntity<>(usuarioService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{idUsuario}")
-    public ResponseEntity<UserOutputDTO> getById(@PathVariable @Positive Integer idUsuario){
-        return new ResponseEntity<>(usuarioService.getById(idUsuario), HttpStatus.OK);
+    @GetMapping("/{idUser}")
+    public ResponseEntity<UserOutputDTO> getById(@PathVariable @Positive Integer idUser){
+        return new ResponseEntity<>(usuarioService.getById(idUser), HttpStatus.OK);
     }
 
-    @GetMapping("/logado")
+    @GetMapping("/loged")
     public ResponseEntity<LoggedinUserDTO> getLogedUser() throws BussinessRuleException {
         return new ResponseEntity<>(usuarioService.getLogedUser(), HttpStatus.OK);
     }
 
-    @GetMapping("/logado/id")
+    @GetMapping("/loged/id")
     public ResponseEntity<Integer> getIdLogedUser() throws BussinessRuleException {
         return new ResponseEntity<>(usuarioService.getIdLogedUser(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<UserOutputDTO> save(@RequestBody @Valid LoginInputDTO loginInputDTO, Role cargo){
+    public ResponseEntity<UserOutputDTO> save(@RequestBody @Valid LoginInputDTO loginInputDTO){
+        return new ResponseEntity<>(usuarioService.registerAdmin(loginInputDTO, Role.ROLE_USUARIO), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<UserOutputDTO> saveByAdmin(@RequestBody @Valid LoginInputDTO loginInputDTO, Role cargo){
         return new ResponseEntity<>(usuarioService.registerAdmin(loginInputDTO, cargo), HttpStatus.CREATED);
     }
 }

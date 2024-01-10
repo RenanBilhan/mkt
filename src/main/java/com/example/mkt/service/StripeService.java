@@ -33,7 +33,7 @@ public class StripeService {
         OrderEntity order = pedidoRepository.findById(idOrder).orElseThrow(() -> new EntitiesNotFoundException("Order not found."));
 
         if(order.getStatus().toString().toUpperCase() != "AGUARDANDO_PAGAMENTO"){
-            throw new BussinessRuleException("The payment has already been paid.");
+            throw new BussinessRuleException("The order has already been paid.");
         }
 
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()

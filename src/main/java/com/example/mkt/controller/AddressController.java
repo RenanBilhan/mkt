@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/endereco")
+@RequestMapping("/address")
 @RequiredArgsConstructor
 public class AddressController implements AddressControllerDoc {
 

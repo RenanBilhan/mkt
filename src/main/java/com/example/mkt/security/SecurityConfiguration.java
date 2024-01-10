@@ -3,6 +3,7 @@ package com.example.mkt.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,7 +33,23 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().permitAll()
+                        .antMatchers(HttpMethod.GET,"/product/**","/stock/{idEstoque}").permitAll()
+                        .antMatchers(HttpMethod.POST, "/user", "/auth").permitAll()
+                        .antMatchers(HttpMethod.POST, "/simulator/**").hasAnyRole(ROLE_USUARIO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.PUT, "/client/**").hasAnyRole(ROLE_USUARIO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.GET, "/client/{idClient}", "/client/foto/{idClient}").hasAnyRole(ROLE_USUARIO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.GET, "/user/loged", "/user/loged/id").hasAnyRole(ROLE_USUARIO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.GET, "/order/{idClient}").hasAnyRole(ROLE_USUARIO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.GET, "/address/{idClient}").hasAnyRole(ROLE_USUARIO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.GET, "/address/cliente/{idClient}").hasAnyRole(ROLE_USUARIO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.POST, "/stock", "/stock/**").hasAnyRole(ROLE_PARCEIRO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.PUT, "/stock", "/stock/**").hasAnyRole(ROLE_PARCEIRO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.POST, "/product").hasAnyRole(ROLE_PARCEIRO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.PUT, "/product", "/product/**").hasAnyRole(ROLE_PARCEIRO, ROLE_ADMIN)
+                        .antMatchers(HttpMethod.GET, "/address/{idClient}", "/stock", "/product", "/client", "/user", "/order", "/address").hasAnyRole(ROLE_ADMIN)
+                        .antMatchers(HttpMethod.POST, "/user/admin").hasRole(ROLE_ADMIN)
+                        .antMatchers(HttpMethod.DELETE, "/product/{idproduto}").hasRole(ROLE_ADMIN)
+                        .anyRequest().denyAll()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
 

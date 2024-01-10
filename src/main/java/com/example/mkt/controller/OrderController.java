@@ -14,7 +14,7 @@ import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedido")
+@RequestMapping("/order")
 @RequiredArgsConstructor
 public class OrderController implements OrderControllerDoc {
 
