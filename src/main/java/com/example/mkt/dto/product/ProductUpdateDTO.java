@@ -12,13 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductUpdateDTO {
 
-    @Schema(description = "Product's name", required = true)
+    @Schema(description = "Product's name", required = false)
     private String nameProduct;
 
-    @Schema(description = "Product's price", required = true)
+    @Schema(description = "Product's price", required = false)
     private Double price;
 
-    @Schema(description = "Product's description", required = true)
+    @Schema(description = "Product's description", required = false)
     private String description;
 
 }
