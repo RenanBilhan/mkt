@@ -19,8 +19,7 @@ import java.util.Objects;
 public class OrderEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PEDIDO_SEQ")
-    @SequenceGenerator(name = "PEDIDO_SEQ", sequenceName = "seq_pedido", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PEDIDO")
     private Integer idOrder;
 

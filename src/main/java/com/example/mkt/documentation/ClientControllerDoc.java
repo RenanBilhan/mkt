@@ -2,6 +2,7 @@ package com.example.mkt.documentation;
 
 import com.example.mkt.dto.client.ClientInputDTO;
 import com.example.mkt.dto.client.ClientOutputDTO;
+import com.example.mkt.dto.login.LoginInputDTO;
 import com.example.mkt.dto.message.StatusMessage;
 import com.example.mkt.entity.enums.PersonGender;
 import com.example.mkt.exceptions.BussinessRuleException;
@@ -63,7 +64,7 @@ public interface ClientControllerDoc {
             }
     )
     @PostMapping("/usuario/{idUser}")
-    public ResponseEntity<ClientOutputDTO> save(PersonGender personGender, @RequestBody @Valid ClientInputDTO clientInputDTO, @PathVariable Integer idUser);
+    public ResponseEntity<ClientOutputDTO> save(PersonGender personGender, @RequestBody @Valid ClientInputDTO clientInputDTO, @RequestBody @Valid LoginInputDTO loginInputDTO);
 
     @Operation(summary = "Update a client information.", description = "Update a client information in the database. You can send the ClientInputDTO and the client id by the parameters.")
     @ApiResponses(

@@ -17,8 +17,7 @@ public class ProductEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUTO_SEQ")
-    @SequenceGenerator(name = "PRODUTO_SEQ", sequenceName = "SEQ_PRODUTO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PRODUTO")
     private Integer idProduct;
 
@@ -31,7 +30,6 @@ public class ProductEntity implements Serializable {
     @Column(name = "DESCRICAO")
     private String description;
 
-    @Lob
-    @Column(name = "IMAGEM")
+    @Column(name = "IMAGEM", columnDefinition = "bytea")
     private byte[] image;
 }

@@ -20,8 +20,7 @@ import java.util.Objects;
 public class StockEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ESTOQUE_SEQ")
-    @SequenceGenerator(name = "ESTOQUE_SEQ", sequenceName = "SEQ_ESTOQUE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ESTOQUE")
     private Integer idStock;
 

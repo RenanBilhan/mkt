@@ -2,9 +2,13 @@ package com.example.mkt.service;
 
 import com.example.mkt.dto.client.ClientInputDTO;
 import com.example.mkt.dto.client.ClientOutputDTO;
+import com.example.mkt.dto.login.LoginInputDTO;
 import com.example.mkt.dto.message.StatusMessage;
+import com.example.mkt.dto.user.UserOutputDTO;
 import com.example.mkt.entity.ClientEntity;
+import com.example.mkt.entity.UserEntity;
 import com.example.mkt.entity.enums.PersonGender;
+import com.example.mkt.entity.enums.Role;
 import com.example.mkt.exceptions.EntitiesNotFoundException;
 import com.example.mkt.exceptions.FormatNotValid;
 import com.example.mkt.exceptions.BussinessRuleException;
@@ -32,6 +36,7 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<ClientOutputDTO> findAll(){
         return clientRepository.findAll().stream()
@@ -60,10 +65,12 @@ public class ClientService {
         return photoString;
     }
 
-    public ClientOutputDTO save(ClientInputDTO clientInputDTO, Integer idUser, PersonGender personGender){
+    public ClientOutputDTO save(ClientInputDTO clientInputDTO, LoginInputDTO loginInputDTO, PersonGender personGender){
         ClientEntity newClient = new ClientEntity();
 
-        newClient.setUserEntity(userRepository.findById(idUser).get());
+        UserOutputDTO savedUser = userService.registerAdmin(loginInputDTO, Role.ROLE_USER);
+
+        newClient.setUserEntity(userRepository.findById(savedUser.getIdUser()).get());
         newClient.setGender(personGender.toString());
         newClient.setNameClient(clientInputDTO.getNameClient());
         newClient.setEmailClient(clientInputDTO.getEmailClient());

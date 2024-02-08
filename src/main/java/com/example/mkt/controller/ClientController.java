@@ -3,6 +3,7 @@ package com.example.mkt.controller;
 import com.example.mkt.documentation.ClientControllerDoc;
 import com.example.mkt.dto.client.ClientInputDTO;
 import com.example.mkt.dto.client.ClientOutputDTO;
+import com.example.mkt.dto.login.LoginInputDTO;
 import com.example.mkt.dto.message.StatusMessage;
 import com.example.mkt.entity.enums.PersonGender;
 import com.example.mkt.exceptions.FormatNotValid;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RequestMapping("/client")
 public class ClientController implements ClientControllerDoc {
@@ -41,9 +43,9 @@ public class ClientController implements ClientControllerDoc {
         return new ResponseEntity<>(foto, HttpStatus.OK);
     }
 
-    @PostMapping("/usuario/{idUser}")
-    public ResponseEntity<ClientOutputDTO> save(PersonGender personGender, @RequestBody @Valid ClientInputDTO clientInputDTO, @PathVariable Integer idUser){
-        return new ResponseEntity<>(clientService.save(clientInputDTO, idUser, personGender), HttpStatus.CREATED);
+    @PostMapping("/usuario/")
+    public ResponseEntity<ClientOutputDTO> save(PersonGender personGender, @RequestBody @Valid ClientInputDTO clientInputDTO,  @RequestBody @Valid LoginInputDTO loginInputDTO){
+        return new ResponseEntity<>(clientService.save(clientInputDTO, loginInputDTO, personGender), HttpStatus.CREATED);
     }
 
     @PutMapping("{idClient}")

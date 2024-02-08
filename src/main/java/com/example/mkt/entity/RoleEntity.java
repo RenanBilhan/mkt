@@ -18,8 +18,7 @@ import java.util.Set;
 public class RoleEntity implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARGO_SEQ")
-    @SequenceGenerator(name = "CARGO_SEQ", sequenceName = "seq_cargo", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_CARGO")
     private Integer idRole;
 

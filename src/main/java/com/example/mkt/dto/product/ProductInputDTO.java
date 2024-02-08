@@ -25,10 +25,10 @@ public class ProductInputDTO {
 
     @Positive(message = "Product must have a valid price")
     @Schema(description = "Product price", required = true)
-    private Double preco;
+    private Double price;
 
     @NotNull(message = "Product must have a description")
     @NotEmpty(message = "Product must have a description")
     @Schema(description = "Product's description", required = true)
-    private String descricao;
+    private String description;
 }
