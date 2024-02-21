@@ -1,5 +1,5 @@
-MarketPlace Database Simulation
-Simulação de Banco de Dados de um MarketPlace
+MarketPlace Backend Simulation
+Simulação do Backend de um MarketPlace
 
 Tecnologies used:
   * Java 17
@@ -9,6 +9,7 @@ Tecnologies used:
   * Spring Security
   * Stripe Payment API
   * Swagger
+  * Clean Architecture
 
 **Credit card test token to use:
 card number: 4242424242424242 
